@@ -5,7 +5,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Button } from '@/components/ui/button';
 import { Lightbulb, FileClock, Stethoscope, Microscope, FlaskConical, ChevronDown } from 'lucide-react';
 
-interface CaseStep {
+export interface CaseStep {
   title: string;
   content: string;
   type: 'history' | 'physical' | 'diagnostic' | 'treatment' | 'followup';

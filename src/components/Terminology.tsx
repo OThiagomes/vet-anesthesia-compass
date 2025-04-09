@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookText, Search, Bookmark, VolumeX, Volume2 } from "lucide-react";
+import { BookText, Search, Bookmark, VolumeX, Volume2 } from 'lucide-react';
 
 export interface Term {
   id: string;
