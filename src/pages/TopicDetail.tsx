@@ -4,9 +4,10 @@ import {
   ChevronLeft, Activity, Heart, Droplet, Wind, Layers, 
   Syringe, Pill, ListChecks, Stethoscope, Bed,
   BookOpen, BookMarked, Lightbulb, AlertTriangle, CheckCircle,
-  BookText, FileSpreadsheet, BrainCircuit, FlaskConical
+  BookText, FileSpreadsheet, BrainCircuit, FlaskConical, Flask
 } from 'lucide-react';
 import { anesthesiaTopics } from '../data/anesthesiaTopics';
+import { anesthesiaDrugs } from '../data/pharmacologyData';
 import Navbar from '../components/Navbar';
 import MindMap from '../components/MindMap';
 import InfoBalloon from '../components/InfoBalloon';
@@ -14,6 +15,7 @@ import AISchemaGenerator from '../components/AISchemaGenerator';
 import CaseStudy, { CaseStep } from '../components/CaseStudy';
 import QuizSection from '../components/QuizSection';
 import Terminology from '../components/Terminology';
+import Pharmaceuticals from '../components/Pharmaceuticals';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -250,7 +252,7 @@ const TopicDetail: React.FC = () => {
           
           <div className="p-6">
             <Tabs defaultValue="mindmap" className="mb-8">
-              <TabsList className="mb-6 grid grid-cols-5 md:w-full overflow-x-auto">
+              <TabsList className="mb-6 grid grid-cols-6 md:w-full overflow-x-auto">
                 <TabsTrigger value="mindmap" className="flex items-center">
                   <BrainCircuit size={16} className="mr-2" />
                   Mapa Mental
@@ -258,6 +260,10 @@ const TopicDetail: React.FC = () => {
                 <TabsTrigger value="content" className="flex items-center">
                   <BookText size={16} className="mr-2" />
                   Conteúdo Detalhado
+                </TabsTrigger>
+                <TabsTrigger value="pharmacology" className="flex items-center">
+                  <Flask size={16} className="mr-2" />
+                  Farmacologia
                 </TabsTrigger>
                 <TabsTrigger value="terminology" className="flex items-center">
                   <BookOpen size={16} className="mr-2" />
@@ -493,6 +499,22 @@ const TopicDetail: React.FC = () => {
                       </ul>
                     </div>
                   </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="pharmacology" className="mt-4">
+                <div>
+                  <h2 className="text-2xl font-bold mb-4 text-vet-dark flex items-center">
+                    <Flask size={24} className="mr-2" />
+                    Farmacologia da Anestesia
+                  </h2>
+                  <p className="mb-6 text-gray-600">
+                    Explore o detalhamento farmacológico dos principais agentes utilizados em anestesiologia veterinária.
+                    Consulte informações específicas sobre classes terapêuticas, mecanismos de ação, doses recomendadas por espécie,
+                    contraindicações e precauções de uso.
+                  </p>
+                  
+                  <Pharmaceuticals drugList={anesthesiaDrugs} color={topic.color} />
                 </div>
               </TabsContent>
               
