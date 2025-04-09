@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,47 +36,32 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -98,4 +84,150 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom styles for the VetAnesthesia app */
+.bg-vet-blue {
+  background-color: #2B6CB0;
+}
+.bg-vet-green {
+  background-color: #38A169;
+}
+.bg-vet-red {
+  background-color: #E53E3E;
+}
+.bg-vet-orange {
+  background-color: #ED8936;
+}
+.bg-vet-purple {
+  background-color: #805AD5;
+}
+.bg-vet-teal {
+  background-color: #319795;
+}
+.bg-vet-dark {
+  background-color: #2D3748;
+}
+.bg-vet-light {
+  background-color: #F7FAFC;
+}
+
+.text-vet-blue {
+  color: #2B6CB0;
+}
+.text-vet-green {
+  color: #38A169;
+}
+.text-vet-red {
+  color: #E53E3E;
+}
+.text-vet-orange {
+  color: #ED8936;
+}
+.text-vet-purple {
+  color: #805AD5;
+}
+.text-vet-teal {
+  color: #319795;
+}
+.text-vet-dark {
+  color: #2D3748;
+}
+.text-vet-light {
+  color: #F7FAFC;
+}
+
+.border-vet-blue {
+  border-color: #2B6CB0;
+}
+.border-vet-green {
+  border-color: #38A169;
+}
+.border-vet-red {
+  border-color: #E53E3E;
+}
+.border-vet-orange {
+  border-color: #ED8936;
+}
+.border-vet-purple {
+  border-color: #805AD5;
+}
+.border-vet-teal {
+  border-color: #319795;
+}
+
+.bg-vet-blue\/10 {
+  background-color: rgba(43, 108, 176, 0.1);
+}
+.bg-vet-green\/10 {
+  background-color: rgba(56, 161, 105, 0.1);
+}
+.bg-vet-red\/10 {
+  background-color: rgba(229, 62, 62, 0.1);
+}
+.bg-vet-orange\/10 {
+  background-color: rgba(237, 137, 54, 0.1);
+}
+.bg-vet-purple\/10 {
+  background-color: rgba(128, 90, 213, 0.1);
+}
+.bg-vet-teal\/10 {
+  background-color: rgba(49, 151, 149, 0.1);
+}
+
+.bg-vet-blue\/20 {
+  background-color: rgba(43, 108, 176, 0.2);
+}
+.bg-vet-green\/20 {
+  background-color: rgba(56, 161, 105, 0.2);
+}
+.bg-vet-red\/20 {
+  background-color: rgba(229, 62, 62, 0.2);
+}
+.bg-vet-orange\/20 {
+  background-color: rgba(237, 137, 54, 0.2);
+}
+.bg-vet-purple\/20 {
+  background-color: rgba(128, 90, 213, 0.2);
+}
+.bg-vet-teal\/20 {
+  background-color: rgba(49, 151, 149, 0.2);
+}
+
+.border-vet-blue\/20 {
+  border-color: rgba(43, 108, 176, 0.2);
+}
+.border-vet-green\/20 {
+  border-color: rgba(56, 161, 105, 0.2);
+}
+.border-vet-red\/20 {
+  border-color: rgba(229, 62, 62, 0.2);
+}
+.border-vet-orange\/20 {
+  border-color: rgba(237, 137, 54, 0.2);
+}
+.border-vet-purple\/20 {
+  border-color: rgba(128, 90, 213, 0.2);
+}
+.border-vet-teal\/20 {
+  border-color: rgba(49, 151, 149, 0.2);
+}
+
+.border-vet-blue\/30 {
+  border-color: rgba(43, 108, 176, 0.3);
+}
+.border-vet-green\/30 {
+  border-color: rgba(56, 161, 105, 0.3);
+}
+.border-vet-red\/30 {
+  border-color: rgba(229, 62, 62, 0.3);
+}
+.border-vet-orange\/30 {
+  border-color: rgba(237, 137, 54, 0.3);
+}
+.border-vet-purple\/30 {
+  border-color: rgba(128, 90, 213, 0.3);
+}
+.border-vet-teal\/30 {
+  border-color: rgba(49, 151, 149, 0.3);
 }
