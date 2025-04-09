@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
@@ -24,7 +25,7 @@ const TopicDetail: React.FC = () => {
       case 'pill': return <Pill size={28} />;
       case 'list-checks': return <ListChecks size={28} />;
       case 'activity': return <Activity size={28} />;
-      case 'lungs': return <Activity size={28} />;
+      case 'lungs': return <Activity size={28} />; // Replace with Activity icon
       case 'bed': return <Bed size={28} />;
       case 'stethoscope': return <Stethoscope size={28} />;
       default: return <Activity size={28} />;

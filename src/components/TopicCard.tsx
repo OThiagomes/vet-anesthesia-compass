@@ -2,13 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Activity, Heart, Droplet, Wind, Layers, 
-  Syringe, Pill, ListChecks, Stethoscope, Bed, Lungs as LungsIcon 
+  Syringe, Pill, ListChecks, Stethoscope, Bed 
 } from 'lucide-react';
 import { Topic } from '../data/anesthesiaTopics';
-
-const Lungs = (props: any) => (
-  <LungsIcon {...props} />
-);
 
 const getIcon = (iconName: string, size: number = 24) => {
   switch (iconName) {
