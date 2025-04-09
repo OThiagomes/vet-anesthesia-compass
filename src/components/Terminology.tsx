@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookText, Search, BookmarksSimple, VolumeTwo } from "lucide-react";
+import { BookText, Search, Bookmark, VolumeX, Volume2 } from "lucide-react";
 
 export interface Term {
   id: string;
@@ -119,7 +118,7 @@ const Terminology: React.FC<TerminologyProps> = ({ terms, color = 'vet-blue' }) 
                       className="h-8 w-8 p-0"
                       onClick={() => speak(`${term.term}. ${term.definition}`)}
                     >
-                      <VolumeTwo size={16} />
+                      <Volume2 size={16} />
                     </Button>
                     <Button 
                       variant="ghost" 
@@ -127,7 +126,7 @@ const Terminology: React.FC<TerminologyProps> = ({ terms, color = 'vet-blue' }) 
                       className={`h-8 w-8 p-0 ${bookmarked.includes(term.id) ? 'text-amber-500' : ''}`}
                       onClick={() => toggleBookmark(term.id)}
                     >
-                      <BookmarksSimple size={16} />
+                      <Bookmark size={16} />
                     </Button>
                   </div>
                 </div>

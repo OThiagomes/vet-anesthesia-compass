@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
@@ -12,7 +11,7 @@ import Navbar from '../components/Navbar';
 import MindMap from '../components/MindMap';
 import InfoBalloon from '../components/InfoBalloon';
 import AISchemaGenerator from '../components/AISchemaGenerator';
-import CaseStudy from '../components/CaseStudy';
+import CaseStudy, { CaseStep } from '../components/CaseStudy';
 import QuizSection from '../components/QuizSection';
 import Terminology from '../components/Terminology';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -64,7 +63,6 @@ const TopicDetail: React.FC = () => {
     );
   }
 
-  // Considerações clínicas relacionadas ao tópico
   const clinicalConsiderations = [
     {
       id: 1,
@@ -86,7 +84,6 @@ const TopicDetail: React.FC = () => {
     }
   ];
   
-  // Exemplo de estudo de caso para demonstração
   const exampleCaseStudy = {
     title: "Anestesia em Paciente Canino com Insuficiência Cardíaca",
     species: "Canino",
@@ -97,27 +94,27 @@ const TopicDetail: React.FC = () => {
       {
         title: "Histórico e Anamnese",
         content: "Paciente com histórico de insuficiência cardíaca valvar mitral diagnosticada há 2 anos. Em tratamento com enalapril (0,5 mg/kg BID) e furosemida (2 mg/kg SID). Último ecocardiograma realizado há 3 meses mostrou fração de ejeção de 45% e moderada regurgitação mitral.",
-        type: "history"
+        type: "history" as CaseStep['type']
       },
       {
         title: "Exame Físico Pré-anestésico",
         content: "Frequência cardíaca: 130 bpm\nFrequência respiratória: 28 mpm\nTPC: 2 segundos\nTemperatura: 38.2°C\nSopro cardíaco grau III/VI em foco mitral\nLeve aumento de sons pulmonares em região dorso-caudal\nMucosas levemente pálidas",
-        type: "physical"
+        type: "physical" as CaseStep['type']
       },
       {
         title: "Exames Complementares",
         content: "Hemograma: Hematócrito 32% (referência: 37-55%), demais parâmetros normais\nBioquímico: Leve azotemia (creatinina 1.7 mg/dL, referência: 0.5-1.5 mg/dL)\nEletrocardiograma: Arritmia sinusal com frequentes complexos ventriculares prematuros\nRadiografia torácica: Cardiomegalia e leve edema pulmonar perihilar",
-        type: "diagnostic"
+        type: "diagnostic" as CaseStep['type']
       },
       {
         title: "Protocolo Anestésico Aplicado",
         content: "1. Medicação pré-anestésica: Metadona (0.2 mg/kg IM) + Midazolam (0.2 mg/kg IM)\n2. Indução: Etomidato (1 mg/kg IV) + Midazolam (0.25 mg/kg IV)\n3. Manutenção: Isoflurano em oxigênio 100%, concentração alveolar mínima ajustada para 0.7-0.9%\n4. Fluidoterapia: Ringer Lactato a 3 ml/kg/h\n5. Analgesia trans-operatória: Lidocaína 2% sem vasoconstritor para bloqueios regionais\n6. Monitoramento multiparamétrico contínuo",
-        type: "treatment"
+        type: "treatment" as CaseStep['type']
       },
       {
         title: "Recuperação e Acompanhamento",
         content: "Extubação realizada 10 minutos após término do procedimento\nRecuperação gradual sem excitação\nMonitoramento por 6h pós-anestésicas\nRetomada da medicação cardíaca após 4 horas\nA radiografia de controle 24h após procedimento não mostrou sinais de edema pulmonar\nRecomendação de reavaliação cardiológica em 15 dias",
-        type: "followup"
+        type: "followup" as CaseStep['type']
       }
     ],
     learningPoints: [
@@ -129,7 +126,6 @@ const TopicDetail: React.FC = () => {
     ]
   };
   
-  // Exemplo de perguntas para o componente de quiz
   const quizQuestions = [
     {
       question: "Qual das seguintes afirmações sobre o uso de opioides na anestesia veterinária é INCORRETA?",
@@ -166,7 +162,6 @@ const TopicDetail: React.FC = () => {
     }
   ];
   
-  // Exemplo de termos para o glossário
   const terminologyItems = [
     {
       id: "term1",
@@ -278,7 +273,6 @@ const TopicDetail: React.FC = () => {
                 </TabsTrigger>
               </TabsList>
               
-              {/* Aba de Mapa Mental */}
               <TabsContent value="mindmap" className="mt-4">
                 <MindMap 
                   title={topic.title}
@@ -287,7 +281,6 @@ const TopicDetail: React.FC = () => {
                 />
               </TabsContent>
               
-              {/* Aba de Conteúdo Detalhado */}
               <TabsContent value="content" className="mt-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="col-span-1 md:col-span-2">
@@ -338,7 +331,6 @@ const TopicDetail: React.FC = () => {
                                         <div>
                                           <p className="mb-2">{item}</p>
                                           
-                                          {/* Conteúdo detalhado para cada item (simulado) */}
                                           <div className="mt-3 pl-1 text-sm text-gray-700">
                                             <p className="mb-2">
                                               Este ponto é fundamental para a compreensão completa do tópico. 
@@ -347,7 +339,6 @@ const TopicDetail: React.FC = () => {
                                               fármacos interagem com os sistemas corporais.
                                             </p>
                                             
-                                            {/* Dica clínica */}
                                             <div className="bg-blue-50 border border-blue-100 rounded-md p-3 mt-3 flex">
                                               <Lightbulb size={18} className="text-amber-500 mr-2 flex-shrink-0 mt-0.5" />
                                               <p>
@@ -365,7 +356,6 @@ const TopicDetail: React.FC = () => {
                                   ))}
                                 </ul>
                                 
-                                {/* Seção de questões para fixação */}
                                 <div className="mt-8 p-4 bg-amber-50 border border-amber-100 rounded-lg">
                                   <h4 className="font-medium text-amber-800 mb-3 flex items-center">
                                     <Lightbulb size={18} className="mr-2" />
@@ -394,7 +384,6 @@ const TopicDetail: React.FC = () => {
                       );
                     })}
                     
-                    {/* Quiz para testar conhecimentos */}
                     <div className="mt-8">
                       <h3 className="text-xl font-bold mb-4 text-vet-dark flex items-center">
                         <Activity size={22} className="mr-2" />
@@ -409,7 +398,6 @@ const TopicDetail: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Coluna lateral com considerações clínicas */}
                   <div className="col-span-1">
                     <h3 className="text-lg font-semibold mb-4 text-vet-dark pb-2 border-b">
                       Considerações Clínicas
@@ -469,7 +457,6 @@ const TopicDetail: React.FC = () => {
                       </ul>
                     </div>
                     
-                    {/* Recursos de aprendizado adicionais */}
                     <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
                       <h3 className="font-medium flex items-center mb-3 text-blue-800">
                         <BookMarked size={16} className="mr-2" />
@@ -509,7 +496,6 @@ const TopicDetail: React.FC = () => {
                 </div>
               </TabsContent>
               
-              {/* Aba de Terminologia */}
               <TabsContent value="terminology" className="mt-4">
                 <Terminology 
                   terms={terminologyItems} 
@@ -517,7 +503,6 @@ const TopicDetail: React.FC = () => {
                 />
               </TabsContent>
               
-              {/* Aba de Casos Clínicos */}
               <TabsContent value="clinical" className="mt-4">
                 <div className="mb-6">
                   <h2 className="text-2xl font-bold mb-4 text-vet-dark flex items-center">
@@ -531,7 +516,6 @@ const TopicDetail: React.FC = () => {
                   
                   <CaseStudy {...exampleCaseStudy} />
                   
-                  {/* Botão para mais casos */}
                   <div className="text-center mt-8">
                     <Button variant="outline" className="mx-auto">
                       Ver mais casos clínicos
@@ -540,7 +524,6 @@ const TopicDetail: React.FC = () => {
                 </div>
               </TabsContent>
               
-              {/* Aba de Esquemas */}
               <TabsContent value="schemas" className="mt-4">
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold mb-4 text-vet-dark flex items-center">
