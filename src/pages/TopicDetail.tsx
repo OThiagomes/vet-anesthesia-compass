@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ChevronLeft, Activity, Heart, Droplet, Wind, Layers, 
-  Syringe, Pill, ListChecks, Lungs, Bed, Stethoscope 
+  Syringe, Pill, ListChecks, Stethoscope, Bed 
 } from 'lucide-react';
 import { anesthesiaTopics } from '../data/anesthesiaTopics';
 import Navbar from '../components/Navbar';
@@ -25,7 +24,7 @@ const TopicDetail: React.FC = () => {
       case 'pill': return <Pill size={28} />;
       case 'list-checks': return <ListChecks size={28} />;
       case 'activity': return <Activity size={28} />;
-      case 'lungs': return <Lungs size={28} />;
+      case 'lungs': return <Activity size={28} />;
       case 'bed': return <Bed size={28} />;
       case 'stethoscope': return <Stethoscope size={28} />;
       default: return <Activity size={28} />;

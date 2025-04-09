@@ -1,34 +1,37 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Activity, Heart, Droplet, Wind, Layers, 
-  Syringe, Pill, ListChecks, Lungs, Bed, Stethoscope 
+  Syringe, Pill, ListChecks, Stethoscope, Bed, Lungs as LungsIcon 
 } from 'lucide-react';
 import { Topic } from '../data/anesthesiaTopics';
+
+const Lungs = (props: any) => (
+  <LungsIcon {...props} />
+);
+
+const getIcon = (iconName: string, size: number = 24) => {
+  switch (iconName) {
+    case 'heart': return <Heart size={size} />;
+    case 'droplet': return <Droplet size={size} />;
+    case 'wind': return <Wind size={size} />;
+    case 'layers': return <Layers size={size} />;
+    case 'syringe': return <Syringe size={size} />;
+    case 'pill': return <Pill size={size} />;
+    case 'list-checks': return <ListChecks size={size} />;
+    case 'activity': return <Activity size={size} />;
+    case 'lungs': return <Activity size={size} />;
+    case 'bed': return <Bed size={size} />;
+    case 'stethoscope': return <Stethoscope size={size} />;
+    default: return <Activity size={size} />;
+  }
+};
 
 interface TopicCardProps {
   topic: Topic;
 }
 
 const TopicCard: React.FC<TopicCardProps> = ({ topic }) => {
-  const getIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'heart': return <Heart size={24} />;
-      case 'droplet': return <Droplet size={24} />;
-      case 'wind': return <Wind size={24} />;
-      case 'layers': return <Layers size={24} />;
-      case 'syringe': return <Syringe size={24} />;
-      case 'pill': return <Pill size={24} />;
-      case 'list-checks': return <ListChecks size={24} />;
-      case 'activity': return <Activity size={24} />;
-      case 'lungs': return <Lungs size={24} />;
-      case 'bed': return <Bed size={24} />;
-      case 'stethoscope': return <Stethoscope size={24} />;
-      default: return <Activity size={24} />;
-    }
-  };
-
   return (
     <Link 
       to={`/topic/${topic.id}`} 
