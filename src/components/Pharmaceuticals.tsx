@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,9 +56,9 @@ const Pharmaceuticals: React.FC<PharmaceuticalsProps> = ({ drugList, color }) =>
     switch (species) {
       case 'canine': return <Dog size={16} />;
       case 'feline': return <Cat size={16} />;
-      case 'equine': return <HorseIcon size={16} />;
-      case 'bovine': return <CowIcon size={16} />;
-      case 'avian': return <Bird size={16} />;
+      case 'equine': return <HorseIcon size={16} />;  // Use HorseIcon instead of Horse
+      case 'bovine': return <CowIcon size={16} />;    // Use CowIcon instead of Cow
+      case 'avian': return <Bird size={16} />;        // Use Bird instead of Birds
       case 'exotic': return <Rabbit size={16} />;
       default: return <Dog size={16} />;
     }
