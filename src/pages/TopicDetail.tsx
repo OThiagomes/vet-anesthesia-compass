@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ChevronLeft, Activity, Heart, Droplet, Wind, Layers, 
   Syringe, Pill, ListChecks, Stethoscope, Bed,
   BookOpen, BookMarked, Lightbulb, AlertTriangle, CheckCircle,
-  BookText, FileSpreadsheet, BrainCircuit, FlaskConical as Flask
+  BookText, FileSpreadsheet, BrainCircuit, FlaskConical
 } from 'lucide-react';
 import { anesthesiaTopics } from '../data/anesthesiaTopics';
 import { anesthesiaDrugs } from '../data/pharmacologyData';
