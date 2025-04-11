@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -51,18 +50,6 @@ const Pharmaceuticals: React.FC<PharmaceuticalsProps> = ({ drugList, color }) =>
     
     return matchesSearch && matchesClass && matchesSpecies;
   });
-
-  const getSpeciesIcon = (species: string) => {
-    switch (species) {
-      case 'canine': return <Dog size={16} />;
-      case 'feline': return <Cat size={16} />;
-      case 'equine': return <HorseIcon size={16} />;
-      case 'bovine': return <CowIcon size={16} />;
-      case 'avian': return <Bird size={16} />;
-      case 'exotic': return <Rabbit size={16} />;
-      default: return <Dog size={16} />;
-    }
-  };
 
   const getSafetyLevelColor = (level: string) => {
     switch (level) {
@@ -161,20 +148,6 @@ const Pharmaceuticals: React.FC<PharmaceuticalsProps> = ({ drugList, color }) =>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-shrink-0 items-center">
-                  {drug.dosages.slice(0, 3).map((dosage, idx) => (
-                    <div 
-                      key={idx} 
-                      className="ml-1"
-                      title={`Indicado para ${dosage.species}`}
-                    >
-                      {getSpeciesIcon(dosage.species)}
-                    </div>
-                  ))}
-                  {drug.dosages.length > 3 && (
-                    <span className="ml-1 text-xs text-gray-500">+{drug.dosages.length - 3}</span>
-                  )}
-                </div>
               </CollapsibleTrigger>
               
               <CollapsibleContent>
@@ -214,7 +187,6 @@ const Pharmaceuticals: React.FC<PharmaceuticalsProps> = ({ drugList, color }) =>
                         {drug.dosages.map((dosage, idx) => (
                           <div key={idx} className="border rounded-md p-3">
                             <div className="flex items-center mb-2">
-                              {getSpeciesIcon(dosage.species)}
                               <span className="ml-2 font-medium capitalize">
                                 {dosage.species === 'canine' ? 'Caninos' :
                                  dosage.species === 'feline' ? 'Felinos' :
