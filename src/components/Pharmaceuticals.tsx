@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Pill, Rabbit, Dog, Cat, HorseTail as HorseIcon, Beef as CowIcon, Bird, AlertTriangle, Check, AlertCircle } from 'lucide-react';
+import { Search, Filter, Pill, Rabbit, Dog, Cat, Horse as HorseIcon, Beef as CowIcon, Bird, AlertTriangle, Check, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
