@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ChevronLeft, Activity, Heart, Droplet, Wind, Layers, 
   Syringe, Pill, ListChecks, Stethoscope, Bed,
   BookOpen, BookMarked, Lightbulb, AlertTriangle, CheckCircle,
-  BookText, FileSpreadsheet, BrainCircuit, FlaskConical
+  BookText, FileSpreadsheet, BrainCircuit
 } from 'lucide-react';
 import { anesthesiaTopics } from '../data/anesthesiaTopics';
 import { anesthesiaDrugs } from '../data/pharmacologyData';
@@ -263,7 +262,7 @@ const TopicDetail: React.FC = () => {
                   Conteúdo Detalhado
                 </TabsTrigger>
                 <TabsTrigger value="pharmacology" className="flex items-center">
-                  <Flask size={16} className="mr-2" />
+                  <BrainCircuit size={16} className="mr-2" />
                   Farmacologia
                 </TabsTrigger>
                 <TabsTrigger value="terminology" className="flex items-center">
@@ -271,7 +270,7 @@ const TopicDetail: React.FC = () => {
                   Terminologia
                 </TabsTrigger>
                 <TabsTrigger value="clinical" className="flex items-center">
-                  <FlaskConical size={16} className="mr-2" />
+                  <BrainCircuit size={16} className="mr-2" />
                   Casos Clínicos
                 </TabsTrigger>
                 <TabsTrigger value="schemas" className="flex items-center">
@@ -506,7 +505,7 @@ const TopicDetail: React.FC = () => {
               <TabsContent value="pharmacology" className="mt-4">
                 <div>
                   <h2 className="text-2xl font-bold mb-4 text-vet-dark flex items-center">
-                    <Flask size={24} className="mr-2" />
+                    <BrainCircuit size={24} className="mr-2" />
                     Farmacologia da Anestesia
                   </h2>
                   <p className="mb-6 text-gray-600">
@@ -529,7 +528,7 @@ const TopicDetail: React.FC = () => {
               <TabsContent value="clinical" className="mt-4">
                 <div className="mb-6">
                   <h2 className="text-2xl font-bold mb-4 text-vet-dark flex items-center">
-                    <FlaskConical size={24} className="mr-2" />
+                    <BrainCircuit size={24} className="mr-2" />
                     Casos Clínicos para Estudo
                   </h2>
                   <p className="text-gray-600 mb-6">
