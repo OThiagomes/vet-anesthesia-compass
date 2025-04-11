@@ -47,6 +47,12 @@ const Pharmaceuticals: React.FC<PharmaceuticalsProps> = ({ drugList, color }) =>
     return matchesSearch && matchesClass && matchesSpecies;
   });
 
+  const resetFilters = () => {
+    setSearchTerm('');
+    setSelectedClass(null);
+    setSelectedSpecies(null);
+  };
+
   return (
     <div className="w-full">
       <DrugFilters
@@ -63,6 +69,7 @@ const Pharmaceuticals: React.FC<PharmaceuticalsProps> = ({ drugList, color }) =>
         drugs={filteredDrugs} 
         expandedDrugId={expandedDrugId}
         setExpandedDrugId={setExpandedDrugId}
+        onResetFilters={resetFilters}
       />
     </div>
   );
