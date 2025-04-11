@@ -8,11 +8,17 @@ interface DrugListProps {
   drugs: DrugInfo[];
   expandedDrugId: string | null;
   setExpandedDrugId: (id: string | null) => void;
+  onResetFilters?: () => void;
 }
 
-const DrugList: React.FC<DrugListProps> = ({ drugs, expandedDrugId, setExpandedDrugId }) => {
+const DrugList: React.FC<DrugListProps> = ({ 
+  drugs, 
+  expandedDrugId, 
+  setExpandedDrugId,
+  onResetFilters
+}) => {
   if (drugs.length === 0) {
-    return <EmptyDrugList />;
+    return <EmptyDrugList onReset={onResetFilters} />;
   }
 
   return (
