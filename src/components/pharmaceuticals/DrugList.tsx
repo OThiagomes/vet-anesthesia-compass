@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DrugInfo } from '../Pharmaceuticals';
 import DrugListItem from './DrugListItem';
@@ -74,15 +73,16 @@ const DrugList: React.FC<DrugListProps> = ({
   return (
     <div>
       {/* Header summary */}
-      <div className="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+      <div className="mb-6 bg-blue-50 p-5 rounded-lg border border-blue-100 shadow-sm">
         <h3 className="text-lg font-medium text-blue-800 flex items-center mb-2">
-          <FileText size={18} className="mr-2" /> Farmacologia
+          <FileText size={20} className="mr-2" /> Farmacologia Anestésica
         </h3>
-        <p className="text-sm text-blue-700 mb-3">
+        <p className="text-sm text-blue-700 mb-3 leading-relaxed">
           Esta seção apresenta informações detalhadas sobre os fármacos utilizados em anestesiologia veterinária,
           incluindo mecanismos de ação, dosagens recomendadas, efeitos adversos e considerações clínicas.
+          Utilize esta referência para auxílio na escolha de protocolos anestésicos adaptados para cada paciente.
         </p>
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div className="flex flex-wrap gap-2 mt-3">
           <Badge variant="outline" className="bg-blue-100 text-blue-800">
             {drugs.length} fármacos disponíveis
           </Badge>
@@ -93,9 +93,9 @@ const DrugList: React.FC<DrugListProps> = ({
       </div>
       
       {/* Sorting controls */}
-      <div className="mb-4 bg-gray-50 p-3 rounded-lg border flex flex-wrap gap-2 justify-between items-center">
+      <div className="mb-4 bg-gray-50 p-4 rounded-lg border flex flex-wrap gap-3 justify-between items-center">
         <div className="text-sm text-gray-500 flex items-center">
-          <Filter size={16} className="mr-1" />
+          <Filter size={16} className="mr-2" />
           Exibindo {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, drugs.length)} de {drugs.length} fármacos
         </div>
         <div className="flex gap-2">
@@ -133,7 +133,7 @@ const DrugList: React.FC<DrugListProps> = ({
       </div>
 
       {/* Drug list */}
-      <div className="space-y-4">
+      <div className="space-y-5">
         {currentDrugs.map((drug) => (
           <DrugListItem
             key={drug.id}
@@ -147,7 +147,7 @@ const DrugList: React.FC<DrugListProps> = ({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="mt-6 flex justify-center">
+        <div className="mt-8 flex justify-center">
           <div className="flex items-center space-x-2">
             <Button
               variant="outline"

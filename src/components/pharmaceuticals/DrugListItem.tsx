@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, Link, BookOpen } from 'lucide-react';
+import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,6 +9,7 @@ import SafetyLevelBadge from './SafetyLevelBadge';
 import DrugGeneralInfo from './DrugGeneralInfo';
 import DrugDosageInfo from './DrugDosageInfo';
 import DrugPrecautions from './DrugPrecautions';
+import ReferencesList from '../ReferencesList';
 
 interface DrugListItemProps {
   drug: DrugInfo;
@@ -106,34 +107,34 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                   <ListChecks size={16} className="mr-2" />
                   Considerações Clínicas
                 </h3>
-                <div className={`bg-${color}-50 p-3 rounded-md border border-${color}-100`}>
-                  <p className={`text-sm text-${color}-800`}>
+                <div className={`bg-${color}-50 p-4 rounded-md border border-${color}-100`}>
+                  <p className={`text-sm text-${color}-800 leading-relaxed`}>
                     {drug.notes || "Observe o estado clínico do paciente antes da administração. Monitore os parâmetros cardiovasculares e respiratórios durante o uso. Ajuste as doses conforme necessário baseado na resposta individual do paciente."}
                   </p>
                 </div>
                 
-                <h4 className="font-medium mt-4 mb-2">Pontos de Atenção</h4>
+                <h4 className="font-medium mt-5 mb-2">Pontos de Atenção</h4>
                 <ul className="space-y-2">
                   {drug.clinicalPearls ? (
                     drug.clinicalPearls.map((point, idx) => (
                       <li key={idx} className="flex items-start">
                         <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm">{point}</span>
+                        <span className="text-sm leading-relaxed">{point}</span>
                       </li>
                     ))
                   ) : (
                     <>
                       <li className="flex items-start">
                         <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm">Monitore os sinais vitais durante a administração</span>
+                        <span className="text-sm leading-relaxed">Monitore os sinais vitais durante a administração</span>
                       </li>
                       <li className="flex items-start">
                         <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm">Ajuste a dose em pacientes geriátricos ou com disfunção hepática/renal</span>
+                        <span className="text-sm leading-relaxed">Ajuste a dose em pacientes geriátricos ou com disfunção hepática/renal</span>
                       </li>
                       <li className="flex items-start">
                         <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm">Tenha equipamento de emergência disponível para possíveis reações adversas</span>
+                        <span className="text-sm leading-relaxed">Tenha equipamento de emergência disponível para possíveis reações adversas</span>
                       </li>
                     </>
                   )}
@@ -143,20 +144,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
             
             {drug.references && drug.references.length > 0 && (
               <TabsContent value="references" className="bg-white p-4 rounded-md border animate-in fade-in-50">
-                <div>
-                  <h3 className="font-medium mb-3 flex items-center">
-                    <BookOpen size={16} className="mr-2" />
-                    Referências Bibliográficas
-                  </h3>
-                  <ul className="space-y-2">
-                    {drug.references.map((ref, idx) => (
-                      <li key={idx} className="flex items-start text-sm">
-                        <Link size={14} className={`text-${color}-600 mt-1 mr-2 flex-shrink-0`} />
-                        <span>{ref}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <ReferencesList references={drug.references} color={color} />
               </TabsContent>
             )}
           </Tabs>

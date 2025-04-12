@@ -21,21 +21,25 @@ const ReferencesList: React.FC<ReferencesListProps> = ({
   const getBorderClass = (intensity: number) => `border-${color}/${intensity}`;
 
   return (
-    <div className="mt-6">
+    <div className="mt-8">
       <h4 className="font-medium text-lg mb-3 flex items-center">
-        <BookOpen size={18} className={`${getTextClass()} mr-2`} />
+        <BookOpen size={20} className={`${getTextClass()} mr-2`} />
         {title}
       </h4>
       
-      <div className={`p-4 ${getBorderClass(20)} rounded-lg ${getBgClass(5)}`}>
-        <ul className="space-y-3">
+      <div className={`p-5 ${getBorderClass(20)} rounded-lg ${getBgClass(5)} shadow-sm`}>
+        <ul className="space-y-4">
           {references.map((reference, index) => (
             <li key={index} className="flex items-start text-sm text-gray-700">
-              <ExternalLink size={14} className={`${getTextClass()} mt-1 mr-2 flex-shrink-0`} />
+              <ExternalLink size={16} className={`${getTextClass()} mt-1 mr-3 flex-shrink-0`} />
               <span className="leading-relaxed">{reference}</span>
             </li>
           ))}
         </ul>
+        
+        <div className={`mt-4 pt-4 border-t ${getBorderClass(20)} text-xs text-gray-500 italic`}>
+          Para informações mais detalhadas, consulte as referências acima ou entre em contato com um especialista.
+        </div>
       </div>
     </div>
   );
