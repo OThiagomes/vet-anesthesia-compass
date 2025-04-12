@@ -12,13 +12,15 @@ interface DrugListProps {
   expandedDrugId: string | null;
   setExpandedDrugId: (id: string | null) => void;
   onResetFilters?: () => void;
+  color?: string;
 }
 
 const DrugList: React.FC<DrugListProps> = ({ 
   drugs, 
   expandedDrugId, 
   setExpandedDrugId,
-  onResetFilters
+  onResetFilters,
+  color = "blue"
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -138,6 +140,7 @@ const DrugList: React.FC<DrugListProps> = ({
             drug={drug}
             isExpanded={expandedDrugId === drug.id}
             onToggleExpand={() => setExpandedDrugId(expandedDrugId === drug.id ? null : drug.id)}
+            color={color}
           />
         ))}
       </div>
