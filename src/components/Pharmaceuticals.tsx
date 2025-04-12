@@ -55,6 +55,14 @@ const Pharmaceuticals: React.FC<PharmaceuticalsProps> = ({ drugList, color }) =>
 
   return (
     <div className="w-full">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Farmacologia Aplicada</h2>
+        <p className="text-gray-600">
+          Explore o detalhamento farmacológico dos principais agentes utilizados em anestesiologia veterinária.
+          Utilize os filtros para encontrar informações específicas por nome, classe farmacológica ou espécie animal.
+        </p>
+      </div>
+
       <DrugFilters
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}

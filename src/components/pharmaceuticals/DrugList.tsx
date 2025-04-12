@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { DrugInfo } from '../Pharmaceuticals';
 import DrugListItem from './DrugListItem';
 import EmptyDrugList from './EmptyDrugList';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, SortAsc, SortDesc } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, SortAsc, SortDesc, Filter, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface DrugListProps {
   drugs: DrugInfo[];
@@ -70,9 +71,29 @@ const DrugList: React.FC<DrugListProps> = ({
 
   return (
     <div>
+      {/* Header summary */}
+      <div className="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+        <h3 className="text-lg font-medium text-blue-800 flex items-center mb-2">
+          <FileText size={18} className="mr-2" /> Farmacologia
+        </h3>
+        <p className="text-sm text-blue-700 mb-3">
+          Esta seção apresenta informações detalhadas sobre os fármacos utilizados em anestesiologia veterinária,
+          incluindo mecanismos de ação, dosagens recomendadas, efeitos adversos e considerações clínicas.
+        </p>
+        <div className="flex flex-wrap gap-2 mt-2">
+          <Badge variant="outline" className="bg-blue-100 text-blue-800">
+            {drugs.length} fármacos disponíveis
+          </Badge>
+          <Badge variant="outline" className="bg-blue-100 text-blue-800">
+            {Array.from(new Set(drugs.map(drug => drug.class))).length} classes farmacológicas
+          </Badge>
+        </div>
+      </div>
+      
       {/* Sorting controls */}
       <div className="mb-4 bg-gray-50 p-3 rounded-lg border flex flex-wrap gap-2 justify-between items-center">
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 flex items-center">
+          <Filter size={16} className="mr-1" />
           Exibindo {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, drugs.length)} de {drugs.length} fármacos
         </div>
         <div className="flex gap-2">
