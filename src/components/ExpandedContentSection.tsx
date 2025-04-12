@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Lightbulb, ChevronDown, ChevronUp, PlusCircle } from 'lucide-react';
+import { Lightbulb, ChevronDown, ChevronUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ExpandedContentProps {
   title: string;
@@ -33,10 +34,8 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
 
   const toggleAllItems = () => {
     if (showAllItems) {
-      // Collapse all items
       setExpandedItems({});
     } else {
-      // Expand all items
       const allExpanded: Record<number, boolean> = {};
       items.forEach((_, index) => {
         allExpanded[index] = true;
@@ -46,27 +45,22 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
     setShowAllItems(!showAllItems);
   };
 
-  // Define color classes based on color prop
-  const getBgClass = (intensity: number) => `bg-${color}/${intensity}`;
-  const getTextClass = () => `text-${color}`;
-  const getBorderClass = (intensity: number) => `border-${color}/${intensity}`;
-  const getHoverBorderClass = (intensity: number) => `hover:border-${color}/${intensity}`;
-
   return (
-    <div className="mt-8 space-y-4">
-      <div className="flex justify-between items-center">
-        <h4 className="text-lg font-semibold flex items-center">
-          <Lightbulb size={20} className={`${getTextClass()} mr-2`} />
+    <div className="mt-8">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-lg font-semibold flex items-center">
+          <Lightbulb size={20} className={`text-${color} mr-2`} />
           {title}
-        </h4>
+        </h3>
         
-        <button 
+        <Button 
+          variant="ghost"
+          size="sm"
           onClick={toggleAllItems} 
-          className={`text-sm font-medium flex items-center ${getTextClass()} hover:underline`}
+          className={`text-sm text-${color} hover:bg-${color}/10`}
         >
-          <PlusCircle size={16} className="mr-1" />
           {showAllItems ? "Recolher todos" : "Expandir todos"}
-        </button>
+        </Button>
       </div>
       
       <div className="space-y-3">
@@ -74,16 +68,13 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
           const isExpanded = expandedItems[index] || false;
           
           return (
-            <Card 
-              key={index} 
-              className={`${getBorderClass(20)} ${getHoverBorderClass(50)} transition-colors shadow-sm`}
-            >
+            <Card key={index} className={`border-${color}/20 shadow-sm`}>
               <CardContent className="p-0">
                 <div 
-                  className={`p-4 ${getBgClass(10)} ${getBorderClass(20)} border-b flex justify-between items-center cursor-pointer`}
+                  className={`p-3 bg-${color}/5 flex justify-between items-center cursor-pointer`}
                   onClick={() => toggleItem(index)}
                 >
-                  <h5 className="font-medium text-gray-800">{item.title}</h5>
+                  <h4 className="font-medium text-gray-800">{item.title}</h4>
                   {isExpanded ? 
                     <ChevronUp size={18} className="text-gray-600" /> : 
                     <ChevronDown size={18} className="text-gray-600" />
@@ -91,7 +82,7 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
                 </div>
                 
                 {isExpanded && (
-                  <div className="p-4">
+                  <div className="p-4 border-t border-gray-100">
                     <p className="text-gray-700 whitespace-pre-line leading-relaxed">{item.content}</p>
                   </div>
                 )}

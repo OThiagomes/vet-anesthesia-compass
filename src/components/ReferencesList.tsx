@@ -16,9 +16,9 @@ const ReferencesList: React.FC<ReferencesListProps> = ({
   if (!references || references.length === 0) return null;
 
   // Define color classes based on color prop
-  const getBgClass = (intensity: number) => `bg-${color}/${intensity}`;
+  const getBgClass = () => `bg-${color}/5`;
   const getTextClass = () => `text-${color}`;
-  const getBorderClass = (intensity: number) => `border-${color}/${intensity}`;
+  const getBorderClass = () => `border-${color}/20`;
 
   return (
     <div className="mt-8">
@@ -27,17 +27,17 @@ const ReferencesList: React.FC<ReferencesListProps> = ({
         {title}
       </h4>
       
-      <div className={`p-5 ${getBorderClass(20)} rounded-lg ${getBgClass(5)} shadow-sm`}>
-        <ul className="space-y-4">
+      <div className={`p-5 border ${getBorderClass()} rounded-lg ${getBgClass()}`}>
+        <ul className="space-y-3">
           {references.map((reference, index) => (
             <li key={index} className="flex items-start text-sm text-gray-700">
-              <ExternalLink size={16} className={`${getTextClass()} mt-1 mr-3 flex-shrink-0`} />
+              <ExternalLink size={16} className={`${getTextClass()} mt-1 mr-2 flex-shrink-0`} />
               <span className="leading-relaxed">{reference}</span>
             </li>
           ))}
         </ul>
         
-        <div className={`mt-4 pt-4 border-t ${getBorderClass(20)} text-xs text-gray-500 italic`}>
+        <div className={`mt-4 pt-4 border-t ${getBorderClass()} text-xs text-gray-500 italic`}>
           Para informações mais detalhadas, consulte as referências acima ou entre em contato com um especialista.
         </div>
       </div>

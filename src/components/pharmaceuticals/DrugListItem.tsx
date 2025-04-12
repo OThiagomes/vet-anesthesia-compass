@@ -10,6 +10,7 @@ import DrugGeneralInfo from './DrugGeneralInfo';
 import DrugDosageInfo from './DrugDosageInfo';
 import DrugPrecautions from './DrugPrecautions';
 import ReferencesList from '../ReferencesList';
+import KeyPointsList from '../KeyPointsList';
 
 interface DrugListItemProps {
   drug: DrugInfo;
@@ -38,9 +39,11 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                 {drug.class}
               </Badge>
               <SafetyLevelBadge level={drug.safetyLevel} />
-              <Badge variant="outline" className="text-xs">
-                {drug.dosages.length} dosagens
-              </Badge>
+              {drug.dosages && drug.dosages.length > 0 && (
+                <Badge variant="outline" className="text-xs">
+                  {drug.dosages.length} dosagens
+                </Badge>
+              )}
             </div>
           </div>
         </div>
@@ -56,7 +59,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
       <CollapsibleContent>
         <div className="p-4 border-t bg-gray-50">
           <Tabs defaultValue="info" className="w-full">
-            <TabsList className="mb-4 w-full justify-start bg-white border">
+            <TabsList className="mb-4 w-full justify-start bg-white border overflow-x-auto">
               <TabsTrigger value="info" className="flex items-center">
                 <Info size={16} className="mr-2" />
                 Informações Gerais
@@ -90,14 +93,14 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
             </TabsContent>
             
             <TabsContent value="dosage" className="bg-white p-4 rounded-md border animate-in fade-in-50">
-              <DrugDosageInfo dosages={drug.dosages} />
+              <DrugDosageInfo dosages={drug.dosages || []} />
             </TabsContent>
             
             <TabsContent value="precautions" className="bg-white p-4 rounded-md border animate-in fade-in-50">
               <DrugPrecautions
-                contraindications={drug.contraindications}
-                sideEffects={drug.sideEffects}
-                interactions={drug.interactions}
+                contraindications={drug.contraindications || []}
+                sideEffects={drug.sideEffects || []}
+                interactions={drug.interactions || []}
               />
             </TabsContent>
             
@@ -113,32 +116,13 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                   </p>
                 </div>
                 
-                <h4 className="font-medium mt-5 mb-2">Pontos de Atenção</h4>
-                <ul className="space-y-2">
-                  {drug.clinicalPearls ? (
-                    drug.clinicalPearls.map((point, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm leading-relaxed">{point}</span>
-                      </li>
-                    ))
-                  ) : (
-                    <>
-                      <li className="flex items-start">
-                        <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm leading-relaxed">Monitore os sinais vitais durante a administração</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm leading-relaxed">Ajuste a dose em pacientes geriátricos ou com disfunção hepática/renal</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className={`inline-block w-2 h-2 rounded-full bg-amber-500 mt-2 mr-2`}></span>
-                        <span className="text-sm leading-relaxed">Tenha equipamento de emergência disponível para possíveis reações adversas</span>
-                      </li>
-                    </>
-                  )}
-                </ul>
+                {drug.clinicalPearls && drug.clinicalPearls.length > 0 && (
+                  <KeyPointsList 
+                    points={drug.clinicalPearls} 
+                    title="Pontos de Atenção Clínica" 
+                    color={color}
+                  />
+                )}
               </div>
             </TabsContent>
             
