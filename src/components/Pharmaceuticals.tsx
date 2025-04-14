@@ -19,6 +19,10 @@ export interface DrugInfo {
   safetyLevel: 'low' | 'medium' | 'high';
   references?: string[];
   clinicalPearls?: string[];
+  mechanism?: string;
+  administration?: string;
+  pharmacokinetics?: string;
+  pharmacodynamics?: string;
 }
 
 export interface DrugDosage {

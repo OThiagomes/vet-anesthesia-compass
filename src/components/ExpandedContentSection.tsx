@@ -1,24 +1,30 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Lightbulb, ChevronDown, ChevronUp } from 'lucide-react';
+import { Lightbulb, ChevronDown, ChevronUp, BookOpen, FileText, Info, ListFilter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface ExpandedContentProps {
   title: string;
   content: string;
+  icon?: 'lightbulb' | 'book' | 'file' | 'info' | 'list' | 'none';
 }
 
 interface ExpandedContentSectionProps {
   items: ExpandedContentProps[];
   color?: string;
   title?: string;
+  description?: string;
+  showIcons?: boolean;
 }
 
 const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({ 
   items, 
   color = "vet-blue",
-  title = "Conteúdo Expandido"
+  title = "Conteúdo Expandido",
+  description,
+  showIcons = true
 }) => {
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const [showAllItems, setShowAllItems] = useState(false);
@@ -45,6 +51,27 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
     setShowAllItems(!showAllItems);
   };
 
+  const getIcon = (iconName?: string) => {
+    if (!showIcons) return null;
+
+    switch(iconName) {
+      case 'lightbulb':
+        return <Lightbulb size={16} className="mr-2" />;
+      case 'book':
+        return <BookOpen size={16} className="mr-2" />;
+      case 'file':
+        return <FileText size={16} className="mr-2" />;
+      case 'info':
+        return <Info size={16} className="mr-2" />;
+      case 'list':
+        return <ListFilter size={16} className="mr-2" />;
+      case 'none':
+        return null;
+      default:
+        return <Lightbulb size={16} className="mr-2" />;
+    }
+  };
+
   return (
     <div className="mt-8">
       <div className="flex justify-between items-center mb-4">
@@ -66,19 +93,32 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
           }
         </Button>
       </div>
+
+      {description && (
+        <p className="text-gray-600 mb-4 text-sm">{description}</p>
+      )}
       
       <div className="space-y-3">
         {items.map((item, index) => {
           const isExpanded = expandedItems[index] || false;
           
           return (
-            <Card key={index} className="border shadow-sm">
+            <Card key={index} className={cn(
+              "border shadow-sm",
+              isExpanded ? `border-${color}/30` : "border-gray-200"
+            )}>
               <CardContent className="p-0">
                 <button 
-                  className={`p-3 w-full bg-${color}/5 flex justify-between items-center cursor-pointer text-left`}
+                  className={cn(
+                    "p-3 w-full flex justify-between items-center cursor-pointer text-left",
+                    isExpanded ? `bg-${color}/10` : "bg-gray-50"
+                  )}
                   onClick={() => toggleItem(index)}
                 >
-                  <h4 className="font-medium text-gray-800">{item.title}</h4>
+                  <h4 className="font-medium text-gray-800 flex items-center">
+                    {getIcon(item.icon)}
+                    {item.title}
+                  </h4>
                   {isExpanded ? 
                     <ChevronUp size={18} className="text-gray-600" /> : 
                     <ChevronDown size={18} className="text-gray-600" />

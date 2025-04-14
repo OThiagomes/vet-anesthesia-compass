@@ -1,4 +1,3 @@
-
 import { DrugInfo } from '../components/Pharmaceuticals';
 
 export const anesthesiaDrugs: DrugInfo[] = [
@@ -59,7 +58,18 @@ export const anesthesiaDrugs: DrugInfo[] = [
       "Aumenta depressão cardiovascular quando combinado com alfa-2 agonistas"
     ],
     notes: "Não contém conservantes antimicrobianos, utilizar em até 6 horas após abertura. Formulações em emulsão lipídica favorecem crescimento bacteriano se não manipuladas adequadamente.",
-    safetyLevel: "high"
+    safetyLevel: "high",
+    mechanism: "Atua nos receptores GABA (ácido gama-aminobutírico) tipo A, potencializando a neurotransmissão inibitória. Causa depressão do SNC através do aumento da condutância do cloro, hiperpolarizando os neurônios. Também atua nos receptores de glicina, outro neurotransmissor inibitório.",
+    administration: "Administrar exclusivamente por via intravenosa. A injeção deve ser lenta (em 30-60 segundos) para evitar efeitos cardiovasculares adversos. Para TIVA, utilizar bombas de infusão para controle preciso da dose.",
+    pharmacokinetics: "Distribui-se rapidamente para o SNC (1-1.8 min) e é redistribuído para músculo e tecido adiposo devido à alta lipossolubilidade. Metabolizado no fígado por conjugação com glucuronídeos e sulfatos, com meia-vida de eliminação de 3-6h. Excretado pela urina (88%) e fezes (2%).",
+    pharmacodynamics: "Efeito hipnótico ocorre em 30-60 segundos após administração IV. Causa hipnose sem analgesia significativa. Reduz a pressão intracraniana, consumo cerebral de oxigênio e fluxo sanguíneo cerebral. Deprime os barorreceptores, o que afeta a resposta hemodinâmica.",
+    clinicalPearls: [
+      "A formulação em emulsão lipídica pode causar hipertrigliceridemia em infusões prolongadas",
+      "Monitorar frequência respiratória e cardíaca continuamente durante a administração",
+      "Manter acesso a equipamentos de ressuscitação respiratória antes da administração",
+      "Em pacientes hipovolêmicos, realizar fluidoterapia antes da administração",
+      "Síndrome da infusão do propofol: rara, mas grave em infusões prolongadas (>48h)"
+    ]
   },
   {
     id: "ketamine",

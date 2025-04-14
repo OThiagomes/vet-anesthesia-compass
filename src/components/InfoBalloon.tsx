@@ -1,7 +1,7 @@
 
 import React, { ReactNode, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { ChevronDown, ChevronUp, Download, Share2, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, Share2, Info, AlertCircle, BookOpen, Lightbulb, MessageCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface InfoBalloonProps {
@@ -13,6 +13,8 @@ interface InfoBalloonProps {
   downloadable?: boolean;
   shareable?: boolean;
   icon?: ReactNode;
+  type?: 'info' | 'warning' | 'tip' | 'note' | 'important' | 'success';
+  maxHeight?: number;
 }
 
 const InfoBalloon: React.FC<InfoBalloonProps> = ({ 
@@ -23,7 +25,9 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
   expandable = false,
   downloadable = false,
   shareable = false,
-  icon
+  icon,
+  type = 'info',
+  maxHeight = 20
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -34,6 +38,25 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
     orange: 'bg-vet-orange/10 text-vet-orange border-vet-orange/20',
     purple: 'bg-vet-purple/10 text-vet-purple border-vet-purple/20',
     teal: 'bg-vet-teal/10 text-vet-teal border-vet-teal/20',
+  };
+
+  const getIcon = () => {
+    if (icon) return icon;
+    
+    switch (type) {
+      case 'warning':
+        return <AlertCircle size={18} className="mr-2" />;
+      case 'tip':
+        return <Lightbulb size={18} className="mr-2" />;
+      case 'note':
+        return <MessageCircle size={18} className="mr-2" />;
+      case 'important':
+        return <BookOpen size={18} className="mr-2" />;
+      case 'success':
+        return <CheckCircle size={18} className="mr-2" />;
+      default:
+        return <Info size={18} className="mr-2" />;
+    }
   };
 
   const colorClass = colorVariants[color as keyof typeof colorVariants] || colorVariants.blue;
@@ -79,7 +102,7 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
       {title && (
         <div className="flex justify-between items-center mb-2">
           <h4 className="font-medium flex items-center">
-            {icon || <Info size={18} className="mr-2" />}
+            {getIcon()}
             {title}
           </h4>
           <div className="flex space-x-2">
@@ -108,7 +131,7 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
       )}
       
       <div className={cn(
-        expandable && !expanded ? "max-h-20 overflow-hidden" : "",
+        expandable && !expanded ? `max-h-${maxHeight} overflow-hidden` : "",
         "transition-all duration-300"
       )}>
         {content}

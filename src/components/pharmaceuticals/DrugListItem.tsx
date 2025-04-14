@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen } from 'lucide-react';
+import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Flask, Syringe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -98,6 +98,29 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                   content={<p className="text-sm leading-relaxed">{drug.mechanism}</p>}
                   color={color}
                   expandable={drug.mechanism.length > 200}
+                  icon={<Flask size={18} className="mr-2" />}
+                />
+              )}
+
+              {drug.pharmacokinetics && (
+                <InfoBalloon
+                  title="Farmacocinética"
+                  content={<p className="text-sm leading-relaxed">{drug.pharmacokinetics}</p>}
+                  color={color}
+                  expandable={true}
+                  icon={<FileText size={18} className="mr-2" />}
+                  type="info"
+                />
+              )}
+              
+              {drug.pharmacodynamics && (
+                <InfoBalloon
+                  title="Farmacodinâmica"
+                  content={<p className="text-sm leading-relaxed">{drug.pharmacodynamics}</p>}
+                  color={color}
+                  expandable={true}
+                  icon={<FileText size={18} className="mr-2" />}
+                  type="info"
                 />
               )}
             </TabsContent>
@@ -110,6 +133,8 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                   title="Administração"
                   content={<p className="text-sm leading-relaxed">{drug.administration}</p>}
                   color={color}
+                  icon={<Syringe size={18} className="mr-2" />}
+                  type="tip"
                 />
               )}
             </TabsContent>
@@ -137,6 +162,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                     </p>
                   }
                   color={color}
+                  type="important"
                 />
                 
                 {drug.clinicalPearls && drug.clinicalPearls.length > 0 && (
@@ -144,6 +170,8 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                     points={drug.clinicalPearls} 
                     title="Pontos de Atenção Clínica" 
                     color={color}
+                    importance="high"
+                    description="Observações importantes para aplicação clínica segura e eficaz:"
                   />
                 )}
               </div>
@@ -151,7 +179,11 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
             
             {drug.references && drug.references.length > 0 && (
               <TabsContent value="references" className="bg-white p-4 rounded-md border animate-in fade-in-50">
-                <ReferencesList references={drug.references} color={color} />
+                <ReferencesList 
+                  references={drug.references} 
+                  color={color} 
+                  type="mixed"
+                />
               </TabsContent>
             )}
           </Tabs>
