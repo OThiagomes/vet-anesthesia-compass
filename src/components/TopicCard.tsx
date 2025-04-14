@@ -1,10 +1,13 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Activity, Heart, Droplet, Wind, Layers, 
-  Syringe, Pill, ListChecks, Stethoscope, Bed 
+  Syringe, Pill, ListChecks, Stethoscope, Bed,
+  ArrowRight 
 } from 'lucide-react';
 import { Topic } from '../data/anesthesiaTopics';
+import { cn } from '@/lib/utils';
 
 const getIcon = (iconName: string, size: number = 24) => {
   switch (iconName) {
@@ -25,26 +28,52 @@ const getIcon = (iconName: string, size: number = 24) => {
 
 interface TopicCardProps {
   topic: Topic;
+  className?: string;
+  animate?: boolean;
 }
 
-const TopicCard: React.FC<TopicCardProps> = ({ topic }) => {
+const TopicCard: React.FC<TopicCardProps> = ({ 
+  topic, 
+  className,
+  animate = true
+}) => {
+  const colorMap: Record<string, string> = {
+    blue: "bg-blue-500/10 text-blue-700 hover:bg-blue-500/20 border-blue-500",
+    green: "bg-green-500/10 text-green-700 hover:bg-green-500/20 border-green-500",
+    red: "bg-red-500/10 text-red-700 hover:bg-red-500/20 border-red-500",
+    purple: "bg-purple-500/10 text-purple-700 hover:bg-purple-500/20 border-purple-500",
+    orange: "bg-orange-500/10 text-orange-700 hover:bg-orange-500/20 border-orange-500",
+    teal: "bg-teal-500/10 text-teal-700 hover:bg-teal-500/20 border-teal-500",
+  };
+
+  const colorClass = colorMap[topic.color] || colorMap.blue;
+
   return (
     <Link 
       to={`/topic/${topic.id}`} 
-      className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow animate-fade-in"
+      className={cn(
+        "block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all",
+        animate ? "animate-fade-in" : "",
+        className
+      )}
     >
-      <div className={`p-6 border-t-4 border-${topic.color}`}>
+      <div className="p-6 border-t-4 border-t-opacity-70 transition-colors duration-200" style={{ borderTopColor: `var(--${topic.color}-500, #3b82f6)` }}>
         <div className="flex items-center mb-4">
-          <div className={`w-10 h-10 rounded-full bg-${topic.color}/20 flex items-center justify-center text-${topic.color}`}>
+          <div className={`w-12 h-12 rounded-lg ${colorClass} flex items-center justify-center`}>
             {getIcon(topic.icon)}
           </div>
-          <h3 className="ml-3 text-lg font-semibold text-vet-dark">{topic.title}</h3>
+          <h3 className="ml-3 text-lg font-semibold text-gray-800">{topic.title}</h3>
         </div>
-        <p className="text-gray-600">{topic.description}</p>
+        
+        <p className="text-gray-600 line-clamp-2 mb-4">{topic.description}</p>
+        
         <div className="mt-4 flex justify-between items-center">
-          <span className="text-sm text-gray-500">{topic.subtopics.length} subtópicos</span>
-          <span className="inline-flex items-center text-vet-blue text-sm font-medium">
-            Saiba mais
+          <span className="text-sm font-medium px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-800">
+            {topic.subtopics.length} subtópicos
+          </span>
+          <span className="inline-flex items-center text-blue-600 font-medium text-sm group">
+            Explorar
+            <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
           </span>
         </div>
       </div>

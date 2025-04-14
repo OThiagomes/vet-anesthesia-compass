@@ -1,9 +1,9 @@
-
 import React from 'react';
-import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Beaker, Syringe, Monitor } from 'lucide-react';
+import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Beaker, Syringe, Monitor, Heart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from '@/components/ui/button';
 import { DrugInfo } from '../Pharmaceuticals';
 import SafetyLevelBadge from './SafetyLevelBadge';
 import DrugGeneralInfo from './DrugGeneralInfo';
@@ -13,6 +13,8 @@ import ReferencesList from '../ReferencesList';
 import KeyPointsList from '../KeyPointsList';
 import InfoBalloon from '../InfoBalloon';
 import ExpandedContentSection from '../ExpandedContentSection';
+import BackToTop from '../ui/back-to-top';
+import { useDrugFavorites } from '@/hooks/useDrugFavorites';
 
 interface DrugListItemProps {
   drug: DrugInfo;
@@ -22,7 +24,6 @@ interface DrugListItemProps {
 }
 
 const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleExpand, color = "blue" }) => {
-  // Map of color string to Tailwind class
   const colorMap: Record<string, string> = {
     blue: "blue",
     green: "green",
@@ -32,8 +33,10 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
     teal: "teal",
   };
   
-  // Get the actual color class or default to blue
   const colorClass = colorMap[color] || "blue";
+  
+  const { toggleFavorite, isFavorite } = useDrugFavorites();
+  const drugIsFavorite = isFavorite(drug.id);
   
   return (
     <Collapsible
@@ -62,11 +65,23 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
             </div>
           </div>
         </div>
-        <div className="flex items-center text-gray-500">
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className={`rounded-full ${drugIsFavorite ? `text-red-500` : `text-gray-400`}`}
+            onClick={(e) => {
+              e.stopPropagation(); 
+              toggleFavorite(drug.id, drug.name);
+            }}
+            aria-label={drugIsFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          >
+            <Heart size={18} fill={drugIsFavorite ? "currentColor" : "none"} />
+          </Button>
           {isExpanded ? (
-            <ChevronUp size={20} className="transition-transform" />
+            <ChevronUp size={20} className="transition-transform text-gray-500" />
           ) : (
-            <ChevronDown size={20} className="transition-transform" />
+            <ChevronDown size={20} className="transition-transform text-gray-500" />
           )}
         </div>
       </CollapsibleTrigger>
@@ -266,6 +281,20 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
             )}
           </Tabs>
         </div>
+
+        <div className="bg-white p-3 border-t flex justify-between items-center">
+          <span className="text-sm text-gray-500">ID: {drug.id}</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onToggleExpand()}
+            className="text-sm text-gray-600"
+          >
+            Recolher <ChevronUp size={14} className="ml-1" />
+          </Button>
+        </div>
+        
+        <BackToTop threshold={200} />
       </CollapsibleContent>
     </Collapsible>
   );

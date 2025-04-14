@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { DrugInfo } from '../Pharmaceuticals';
 import DrugListItem from './DrugListItem';
 import EmptyDrugList from './EmptyDrugList';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, SortAsc, SortDesc, Filter, FileText } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, SortAsc, SortDesc, Filter, FileText, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useDrugFavorites } from '@/hooks/useDrugFavorites';
 
 interface DrugListProps {
   drugs: DrugInfo[];
@@ -24,14 +26,29 @@ const DrugList: React.FC<DrugListProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortField, setSortField] = useState<'name' | 'class' | 'safetyLevel'>('name');
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const itemsPerPage = 5;
+  
+  // Use the favorites hook
+  const { favorites, getFavoriteCount } = useDrugFavorites();
+  
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [showOnlyFavorites]);
 
   if (drugs.length === 0) {
     return <EmptyDrugList onReset={onResetFilters} />;
   }
+  
+  // Filter for favorites if needed
+  let filteredDrugs = [...drugs];
+  if (showOnlyFavorites) {
+    filteredDrugs = drugs.filter(drug => favorites.includes(drug.id));
+  }
 
   // Sort drugs
-  const sortedDrugs = [...drugs].sort((a, b) => {
+  const sortedDrugs = [...filteredDrugs].sort((a, b) => {
     if (sortField === 'name') {
       return sortOrder === 'asc' 
         ? a.name.localeCompare(b.name) 
@@ -89,6 +106,10 @@ const DrugList: React.FC<DrugListProps> = ({
           <Badge variant="outline" className="bg-blue-100 text-blue-800">
             {Array.from(new Set(drugs.map(drug => drug.class))).length} classes farmacológicas
           </Badge>
+          <Badge variant="outline" className="bg-red-100 text-red-800 flex items-center gap-1">
+            <Heart size={12} fill="currentColor" />
+            {getFavoriteCount()} favoritos
+          </Badge>
         </div>
       </div>
       
@@ -96,9 +117,18 @@ const DrugList: React.FC<DrugListProps> = ({
       <div className="mb-4 bg-gray-50 p-4 rounded-lg border flex flex-wrap gap-3 justify-between items-center">
         <div className="text-sm text-gray-500 flex items-center">
           <Filter size={16} className="mr-2" />
-          Exibindo {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, drugs.length)} de {drugs.length} fármacos
+          Exibindo {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, sortedDrugs.length)} de {sortedDrugs.length} fármacos
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Button 
+            variant={showOnlyFavorites ? "default" : "outline"} 
+            size="sm" 
+            className="text-xs flex items-center gap-1"
+            onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
+          >
+            <Heart size={14} fill={showOnlyFavorites ? "white" : "none"} />
+            {showOnlyFavorites ? "Todos" : "Favoritos"}
+          </Button>
           <Button 
             variant="outline" 
             size="sm" 
@@ -132,18 +162,30 @@ const DrugList: React.FC<DrugListProps> = ({
         </div>
       </div>
 
+      {/* Empty state for filtered results */}
+      {showOnlyFavorites && sortedDrugs.length === 0 && (
+        <div className="bg-gray-50 p-8 rounded-lg border border-gray-200 text-center">
+          <Heart size={40} className="mx-auto mb-3 text-gray-400" />
+          <h3 className="text-lg font-medium mb-2">Nenhum fármaco favorito</h3>
+          <p className="text-gray-600 mb-4">Você ainda não adicionou nenhum fármaco aos favoritos.</p>
+          <Button onClick={() => setShowOnlyFavorites(false)}>Ver todos os fármacos</Button>
+        </div>
+      )}
+
       {/* Drug list */}
-      <div className="space-y-5">
-        {currentDrugs.map((drug) => (
-          <DrugListItem
-            key={drug.id}
-            drug={drug}
-            isExpanded={expandedDrugId === drug.id}
-            onToggleExpand={() => setExpandedDrugId(expandedDrugId === drug.id ? null : drug.id)}
-            color={color}
-          />
-        ))}
-      </div>
+      {sortedDrugs.length > 0 && (
+        <div className="space-y-5">
+          {currentDrugs.map((drug) => (
+            <DrugListItem
+              key={drug.id}
+              drug={drug}
+              isExpanded={expandedDrugId === drug.id}
+              onToggleExpand={() => setExpandedDrugId(expandedDrugId === drug.id ? null : drug.id)}
+              color={color}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Pagination */}
       {totalPages > 1 && (
