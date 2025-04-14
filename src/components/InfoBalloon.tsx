@@ -1,7 +1,7 @@
 
 import React, { ReactNode, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { ChevronDown, ChevronUp, Download, Share2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, Share2, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface InfoBalloonProps {
@@ -12,6 +12,7 @@ interface InfoBalloonProps {
   expandable?: boolean;
   downloadable?: boolean;
   shareable?: boolean;
+  icon?: ReactNode;
 }
 
 const InfoBalloon: React.FC<InfoBalloonProps> = ({ 
@@ -21,7 +22,8 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
   title,
   expandable = false,
   downloadable = false,
-  shareable = false
+  shareable = false,
+  icon
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -69,15 +71,17 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
   return (
     <div 
       className={cn(
-        "p-4 rounded-lg border animate-float shadow-sm mb-4 transition-all", 
+        "p-4 rounded-lg border shadow-sm mb-4 transition-all", 
         colorClass,
-        expanded ? "animate-none" : "",
         className
       )}
     >
       {title && (
         <div className="flex justify-between items-center mb-2">
-          <h4 className="font-medium">{title}</h4>
+          <h4 className="font-medium flex items-center">
+            {icon || <Info size={18} className="mr-2" />}
+            {title}
+          </h4>
           <div className="flex space-x-2">
             {downloadable && (
               <Button variant="ghost" size="sm" onClick={handleDownload}>
@@ -94,6 +98,7 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
                 variant="ghost" 
                 size="sm"
                 onClick={() => setExpanded(!expanded)}
+                aria-label={expanded ? "Recolher" : "Expandir"}
               >
                 {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </Button>

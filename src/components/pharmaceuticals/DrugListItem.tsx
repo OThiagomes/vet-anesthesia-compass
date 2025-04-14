@@ -11,6 +11,7 @@ import DrugDosageInfo from './DrugDosageInfo';
 import DrugPrecautions from './DrugPrecautions';
 import ReferencesList from '../ReferencesList';
 import KeyPointsList from '../KeyPointsList';
+import InfoBalloon from '../InfoBalloon';
 
 interface DrugListItemProps {
   drug: DrugInfo;
@@ -90,10 +91,27 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                 indications={drug.indications}
                 notes={drug.notes}
               />
+              
+              {drug.mechanism && (
+                <InfoBalloon
+                  title="Mecanismo de Ação"
+                  content={<p className="text-sm leading-relaxed">{drug.mechanism}</p>}
+                  color={color}
+                  expandable={drug.mechanism.length > 200}
+                />
+              )}
             </TabsContent>
             
             <TabsContent value="dosage" className="bg-white p-4 rounded-md border animate-in fade-in-50">
               <DrugDosageInfo dosages={drug.dosages || []} />
+              
+              {drug.administration && (
+                <InfoBalloon
+                  title="Administração"
+                  content={<p className="text-sm leading-relaxed">{drug.administration}</p>}
+                  color={color}
+                />
+              )}
             </TabsContent>
             
             <TabsContent value="precautions" className="bg-white p-4 rounded-md border animate-in fade-in-50">
@@ -110,11 +128,16 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                   <ListChecks size={16} className="mr-2" />
                   Considerações Clínicas
                 </h3>
-                <div className={`bg-${color}-50 p-4 rounded-md border border-${color}-100`}>
-                  <p className={`text-sm text-${color}-800 leading-relaxed`}>
-                    {drug.notes || "Observe o estado clínico do paciente antes da administração. Monitore os parâmetros cardiovasculares e respiratórios durante o uso. Ajuste as doses conforme necessário baseado na resposta individual do paciente."}
-                  </p>
-                </div>
+                
+                <InfoBalloon
+                  title="Monitoramento Recomendado"
+                  content={
+                    <p className="text-sm leading-relaxed">
+                      {drug.notes || "Observe o estado clínico do paciente antes da administração. Monitore os parâmetros cardiovasculares e respiratórios durante o uso. Ajuste as doses conforme necessário baseado na resposta individual do paciente."}
+                    </p>
+                  }
+                  color={color}
+                />
                 
                 {drug.clinicalPearls && drug.clinicalPearls.length > 0 && (
                   <KeyPointsList 

@@ -47,19 +47,23 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
 
   return (
     <div className="mt-8">
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold flex items-center">
           <Lightbulb size={20} className={`text-${color} mr-2`} />
           {title}
         </h3>
         
         <Button 
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={toggleAllItems} 
-          className={`text-sm text-${color} hover:bg-${color}/10`}
+          className="text-sm"
         >
           {showAllItems ? "Recolher todos" : "Expandir todos"}
+          {showAllItems ? 
+            <ChevronUp size={16} className="ml-2" /> : 
+            <ChevronDown size={16} className="ml-2" />
+          }
         </Button>
       </div>
       
@@ -68,10 +72,10 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
           const isExpanded = expandedItems[index] || false;
           
           return (
-            <Card key={index} className={`border-${color}/20 shadow-sm`}>
+            <Card key={index} className="border shadow-sm">
               <CardContent className="p-0">
-                <div 
-                  className={`p-3 bg-${color}/5 flex justify-between items-center cursor-pointer`}
+                <button 
+                  className={`p-3 w-full bg-${color}/5 flex justify-between items-center cursor-pointer text-left`}
                   onClick={() => toggleItem(index)}
                 >
                   <h4 className="font-medium text-gray-800">{item.title}</h4>
@@ -79,7 +83,7 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
                     <ChevronUp size={18} className="text-gray-600" /> : 
                     <ChevronDown size={18} className="text-gray-600" />
                   }
-                </div>
+                </button>
                 
                 {isExpanded && (
                   <div className="p-4 border-t border-gray-100">
