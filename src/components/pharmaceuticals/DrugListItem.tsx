@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Beaker, Syringe } from 'lucide-react';
+import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Beaker, Syringe, Monitoring } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +12,7 @@ import DrugPrecautions from './DrugPrecautions';
 import ReferencesList from '../ReferencesList';
 import KeyPointsList from '../KeyPointsList';
 import InfoBalloon from '../InfoBalloon';
+import ExpandedContentSection from '../ExpandedContentSection';
 
 interface DrugListItemProps {
   drug: DrugInfo;
@@ -20,6 +22,19 @@ interface DrugListItemProps {
 }
 
 const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleExpand, color = "blue" }) => {
+  // Map of color string to Tailwind class
+  const colorMap: Record<string, string> = {
+    blue: "blue",
+    green: "green",
+    red: "red",
+    orange: "orange",
+    purple: "purple",
+    teal: "teal",
+  };
+  
+  // Get the actual color class or default to blue
+  const colorClass = colorMap[color] || "blue";
+  
   return (
     <Collapsible
       open={isExpanded}
@@ -28,8 +43,8 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
     >
       <CollapsibleTrigger className="w-full p-4 flex justify-between items-center hover:bg-gray-50 transition-colors">
         <div className="flex items-center space-x-3">
-          <div className={`bg-${color}-100 p-2 rounded-full ${isExpanded ? `bg-${color}-200` : ''}`}>
-            <Pill size={20} className={`text-${color}-700`} />
+          <div className={`bg-${colorClass}-100 p-2 rounded-full ${isExpanded ? `bg-${colorClass}-200` : ''}`}>
+            <Pill size={20} className={`text-${colorClass}-700`} />
           </div>
           <div className="text-left">
             <h3 className="font-medium text-lg">{drug.name}</h3>
@@ -76,6 +91,10 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                 <Stethoscope size={16} className="mr-2" />
                 Notas Clínicas
               </TabsTrigger>
+              <TabsTrigger value="pharmacology" className="flex items-center">
+                <Beaker size={16} className="mr-2" />
+                Farmacologia
+              </TabsTrigger>
               {drug.references && drug.references.length > 0 && (
                 <TabsTrigger value="references" className="flex items-center">
                   <BookOpen size={16} className="mr-2" />
@@ -95,31 +114,9 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                 <InfoBalloon
                   title="Mecanismo de Ação"
                   content={<p className="text-sm leading-relaxed">{drug.mechanism}</p>}
-                  color={color}
+                  color={colorClass}
                   expandable={drug.mechanism.length > 200}
                   icon={<Beaker size={18} className="mr-2" />}
-                />
-              )}
-
-              {drug.pharmacokinetics && (
-                <InfoBalloon
-                  title="Farmacocinética"
-                  content={<p className="text-sm leading-relaxed">{drug.pharmacokinetics}</p>}
-                  color={color}
-                  expandable={true}
-                  icon={<FileText size={18} className="mr-2" />}
-                  type="info"
-                />
-              )}
-              
-              {drug.pharmacodynamics && (
-                <InfoBalloon
-                  title="Farmacodinâmica"
-                  content={<p className="text-sm leading-relaxed">{drug.pharmacodynamics}</p>}
-                  color={color}
-                  expandable={true}
-                  icon={<FileText size={18} className="mr-2" />}
-                  type="info"
                 />
               )}
             </TabsContent>
@@ -131,7 +128,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                 <InfoBalloon
                   title="Administração"
                   content={<p className="text-sm leading-relaxed">{drug.administration}</p>}
-                  color={color}
+                  color={colorClass}
                   icon={<Syringe size={18} className="mr-2" />}
                   type="tip"
                 />
@@ -146,6 +143,61 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
               />
             </TabsContent>
             
+            <TabsContent value="pharmacology" className="bg-white p-4 rounded-md border animate-in fade-in-50">
+              <div className="space-y-4">
+                <h3 className="font-medium mb-3 flex items-center">
+                  <Beaker size={18} className="mr-2" />
+                  Propriedades Farmacológicas
+                </h3>
+                
+                {drug.pharmacokinetics && (
+                  <InfoBalloon
+                    title="Farmacocinética"
+                    content={<p className="text-sm leading-relaxed">{drug.pharmacokinetics}</p>}
+                    color={colorClass}
+                    expandable={true}
+                    icon={<FileText size={18} className="mr-2" />}
+                    type="info"
+                  />
+                )}
+                
+                {drug.pharmacodynamics && (
+                  <InfoBalloon
+                    title="Farmacodinâmica"
+                    content={<p className="text-sm leading-relaxed">{drug.pharmacodynamics}</p>}
+                    color={colorClass}
+                    expandable={true}
+                    icon={<FileText size={18} className="mr-2" />}
+                    type="info"
+                  />
+                )}
+                
+                {drug.pharmacodynamics && drug.pharmacokinetics && (
+                  <ExpandedContentSection
+                    items={[
+                      {
+                        title: "Biotransformação",
+                        content: "Detalhes sobre os processos de biotransformação hepática e extrahepática do fármaco.",
+                        icon: "file"
+                      },
+                      {
+                        title: "Eliminação",
+                        content: "Informações sobre as vias de excreção e meia-vida de eliminação do fármaco.",
+                        icon: "list"
+                      },
+                      {
+                        title: "Volume de Distribuição",
+                        content: "Descrição do comportamento do fármaco nos diferentes compartimentos corporais.",
+                        icon: "info"
+                      }
+                    ]}
+                    color={colorClass}
+                    title="Informações Farmacológicas Adicionais"
+                  />
+                )}
+              </div>
+            </TabsContent>
+            
             <TabsContent value="clinical" className="bg-white p-4 rounded-md border animate-in fade-in-50">
               <div>
                 <h3 className="font-medium mb-3 flex items-center">
@@ -156,11 +208,38 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                 <InfoBalloon
                   title="Monitoramento Recomendado"
                   content={
-                    <p className="text-sm leading-relaxed">
-                      {drug.notes || "Observe o estado clínico do paciente antes da administração. Monitore os parâmetros cardiovasculares e respiratórios durante o uso. Ajuste as doses conforme necessário baseado na resposta individual do paciente."}
-                    </p>
+                    <div className="space-y-3 text-sm">
+                      <p className="leading-relaxed">
+                        {drug.notes || "Observe o estado clínico do paciente antes da administração. Monitore os parâmetros cardiovasculares e respiratórios durante o uso. Ajuste as doses conforme necessário baseado na resposta individual do paciente."}
+                      </p>
+                      
+                      <div className="bg-blue-50 p-3 rounded-md border border-blue-100">
+                        <h5 className="font-medium text-blue-800 flex items-center">
+                          <Monitoring size={16} className="mr-2" />
+                          Parâmetros de Monitoramento
+                        </h5>
+                        <ul className="mt-2 space-y-1 text-blue-800">
+                          <li className="flex items-center">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                            Frequência cardíaca e respiratória
+                          </li>
+                          <li className="flex items-center">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                            Pressão arterial
+                          </li>
+                          <li className="flex items-center">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                            Saturação de oxigênio
+                          </li>
+                          <li className="flex items-center">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                            Temperatura corporal
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   }
-                  color={color}
+                  color={colorClass}
                   type="important"
                 />
                 
@@ -168,7 +247,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                   <KeyPointsList 
                     points={drug.clinicalPearls} 
                     title="Pontos de Atenção Clínica" 
-                    color={color}
+                    color={colorClass}
                     importance="high"
                     description="Observações importantes para aplicação clínica segura e eficaz:"
                   />
@@ -180,7 +259,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
               <TabsContent value="references" className="bg-white p-4 rounded-md border animate-in fade-in-50">
                 <ReferencesList 
                   references={drug.references} 
-                  color={color} 
+                  color={colorClass} 
                   type="mixed"
                 />
               </TabsContent>

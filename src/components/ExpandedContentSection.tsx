@@ -21,7 +21,7 @@ interface ExpandedContentSectionProps {
 
 const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({ 
   items, 
-  color = "vet-blue",
+  color = "blue",
   title = "Conteúdo Expandido",
   description,
   showIcons = true
@@ -30,6 +30,25 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
   const [showAllItems, setShowAllItems] = useState(false);
 
   if (!items || items.length === 0) return null;
+
+  // Map color string to Tailwind class
+  const colorMap: Record<string, string> = {
+    blue: "blue",
+    green: "green",
+    red: "red",
+    orange: "orange",
+    purple: "purple",
+    teal: "teal",
+    "vet-blue": "blue",
+    "vet-green": "green",
+    "vet-red": "red",
+    "vet-orange": "orange",
+    "vet-purple": "purple",
+    "vet-teal": "teal"
+  };
+  
+  // Get the actual color class or default to blue
+  const colorClass = colorMap[color] || "blue";
 
   const toggleItem = (index: number) => {
     setExpandedItems(prev => ({
@@ -76,7 +95,7 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
     <div className="mt-8">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold flex items-center">
-          <Lightbulb size={20} className={`text-${color} mr-2`} />
+          <Lightbulb size={20} className={`text-${colorClass}-700 mr-2`} />
           {title}
         </h3>
         
@@ -105,13 +124,13 @@ const ExpandedContentSection: React.FC<ExpandedContentSectionProps> = ({
           return (
             <Card key={index} className={cn(
               "border shadow-sm",
-              isExpanded ? `border-${color}/30` : "border-gray-200"
+              isExpanded ? `border-${colorClass}-300` : "border-gray-200"
             )}>
               <CardContent className="p-0">
                 <button 
                   className={cn(
                     "p-3 w-full flex justify-between items-center cursor-pointer text-left",
-                    isExpanded ? `bg-${color}/10` : "bg-gray-50"
+                    isExpanded ? `bg-${colorClass}-50` : "bg-gray-50"
                   )}
                   onClick={() => toggleItem(index)}
                 >

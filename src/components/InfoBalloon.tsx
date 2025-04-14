@@ -31,13 +31,41 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
 
-  const colorVariants = {
-    blue: 'bg-vet-blue/10 text-vet-blue border-vet-blue/20',
-    green: 'bg-vet-green/10 text-vet-green border-vet-green/20',
-    red: 'bg-vet-red/10 text-vet-red border-vet-red/20',
-    orange: 'bg-vet-orange/10 text-vet-orange border-vet-orange/20',
-    purple: 'bg-vet-purple/10 text-vet-purple border-vet-purple/20',
-    teal: 'bg-vet-teal/10 text-vet-teal border-vet-teal/20',
+  // Map color string to Tailwind class
+  const colorMap: Record<string, string> = {
+    blue: "blue",
+    green: "green",
+    red: "red",
+    orange: "orange",
+    purple: "purple",
+    teal: "teal",
+    "vet-blue": "blue",
+    "vet-green": "green",
+    "vet-red": "red",
+    "vet-orange": "orange",
+    "vet-purple": "purple",
+    "vet-teal": "teal"
+  };
+  
+  // Get the actual color class or default to blue
+  const colorClass = colorMap[color] || "blue";
+
+  const colorVariants: Record<string, string> = {
+    blue: 'bg-blue-50 text-blue-800 border-blue-100',
+    green: 'bg-green-50 text-green-800 border-green-100',
+    red: 'bg-red-50 text-red-800 border-red-100',
+    orange: 'bg-orange-50 text-orange-800 border-orange-100',
+    purple: 'bg-purple-50 text-purple-800 border-purple-100',
+    teal: 'bg-teal-50 text-teal-800 border-teal-100',
+  };
+
+  const typeColorMap: Record<string, string> = {
+    warning: 'bg-orange-50 text-orange-800 border-orange-100',
+    tip: 'bg-green-50 text-green-800 border-green-100',
+    note: 'bg-blue-50 text-blue-800 border-blue-100',
+    important: 'bg-red-50 text-red-800 border-red-100',
+    success: 'bg-green-50 text-green-800 border-green-100',
+    info: `bg-${colorClass}-50 text-${colorClass}-800 border-${colorClass}-100`,
   };
 
   const getIcon = () => {
@@ -59,7 +87,7 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
     }
   };
 
-  const colorClass = colorVariants[color as keyof typeof colorVariants] || colorVariants.blue;
+  const colorClass2 = type === 'info' ? colorVariants[colorClass] || colorVariants.blue : typeColorMap[type];
 
   const handleDownload = () => {
     // Convert content to string if possible
@@ -95,7 +123,7 @@ const InfoBalloon: React.FC<InfoBalloonProps> = ({
     <div 
       className={cn(
         "p-4 rounded-lg border shadow-sm mb-4 transition-all", 
-        colorClass,
+        colorClass2,
         className
       )}
     >
