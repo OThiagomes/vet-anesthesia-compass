@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Beaker, Syringe, Monitoring } from 'lucide-react';
+import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Beaker, Syringe, Monitor } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -215,7 +215,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                       
                       <div className="bg-blue-50 p-3 rounded-md border border-blue-100">
                         <h5 className="font-medium text-blue-800 flex items-center">
-                          <Monitoring size={16} className="mr-2" />
+                          <Monitor size={16} className="mr-2" />
                           Parâmetros de Monitoramento
                         </h5>
                         <ul className="mt-2 space-y-1 text-blue-800">
