@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Flask, Syringe } from 'lucide-react';
+import { Pill, ChevronDown, ChevronUp, Info, FileText, AlertTriangle, Book, ListChecks, Stethoscope, BookOpen, Beaker, Syringe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -98,7 +97,7 @@ const DrugListItem: React.FC<DrugListItemProps> = ({ drug, isExpanded, onToggleE
                   content={<p className="text-sm leading-relaxed">{drug.mechanism}</p>}
                   color={color}
                   expandable={drug.mechanism.length > 200}
-                  icon={<Flask size={18} className="mr-2" />}
+                  icon={<Beaker size={18} className="mr-2" />}
                 />
               )}
 
