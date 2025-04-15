@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, FileText, Pill } from 'lucide-react';
@@ -64,7 +63,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
       if (topic.title.toLowerCase().includes(searchTermLower) ||
           topic.description.toLowerCase().includes(searchTermLower)) {
         newResults.push({
-          id: topic.id,
+          id: topic.id.toString(),
           title: topic.title,
           type: 'topic',
           description: topic.description,
@@ -74,16 +73,17 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
       }
 
       // Search in subtopics
-      topic.subtopics.forEach(subtopic => {
+      topic.subtopics.forEach((subtopic, subtopicIndex) => {
+        const subtopicContentString = subtopic.content.join(' ');
         if (subtopic.title.toLowerCase().includes(searchTermLower) ||
-            subtopic.content.toLowerCase().includes(searchTermLower)) {
+            subtopicContentString.toLowerCase().includes(searchTermLower)) {
           newResults.push({
-            id: `${topic.id}-${subtopic.id}`,
+            id: `${topic.id}-${subtopicIndex}`,
             title: subtopic.title,
             type: 'subtopic',
             description: topic.title + ' > ' + subtopic.title,
-            path: `/topic/${topic.id}#${subtopic.id}`,
-            parentId: topic.id,
+            path: `/topic/${topic.id}#${subtopicIndex}`,
+            parentId: topic.id.toString(),
             icon: 'subtopic'
           });
         }
@@ -106,7 +106,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
       }
     });
 
-    setResults(newResults.slice(0, 10)); // Limit to 10 results
+    setResults(newResults.slice(0, 10));
   }, [searchTerm, topics, drugs]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
