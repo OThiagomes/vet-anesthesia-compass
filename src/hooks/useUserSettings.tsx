@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 type UserSettings = {
   theme: 'light' | 'dark' | 'system';
@@ -19,6 +20,7 @@ const defaultSettings: UserSettings = {
 export function useUserSettings() {
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Load settings from localStorage
@@ -29,11 +31,16 @@ export function useUserSettings() {
         setSettings(prevSettings => ({ ...prevSettings, ...parsedSettings }));
       } catch (e) {
         console.error('Failed to parse user settings:', e);
+        toast({
+          title: "Erro nas configurações",
+          description: "Não foi possível carregar suas configurações. Usando configurações padrão.",
+          variant: "destructive"
+        });
       }
     }
     
     setIsLoaded(true);
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     // Save settings to localStorage whenever they change
@@ -43,12 +50,60 @@ export function useUserSettings() {
     }
   }, [settings, isLoaded]);
 
+  // Apply theme from settings
+  useEffect(() => {
+    if (!isLoaded) return;
+    
+    const applyTheme = () => {
+      const { theme } = settings;
+      const root = window.document.documentElement;
+      
+      if (theme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+        root.classList.remove('light', 'dark');
+        root.classList.add(systemTheme);
+      } else {
+        root.classList.remove('light', 'dark');
+        root.classList.add(theme);
+      }
+    };
+    
+    applyTheme();
+    
+    // Listen for system theme changes if using system theme
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      if (settings.theme === 'system') {
+        applyTheme();
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [settings.theme, isLoaded]);
+
   const updateSettings = (newSettings: Partial<UserSettings>) => {
-    setSettings(prev => ({ ...prev, ...newSettings }));
+    setSettings(prev => {
+      const updated = { ...prev, ...newSettings };
+      return updated;
+    });
+    
+    toast({
+      title: "Configurações atualizadas",
+      description: "Suas preferências foram salvas com sucesso.",
+      variant: "default"
+    });
   };
 
   const resetSettings = () => {
     setSettings(defaultSettings);
+    toast({
+      title: "Configurações redefinidas",
+      description: "Suas configurações foram restauradas para o padrão.",
+      variant: "default"
+    });
   };
 
   const updateLastVisited = (path: string) => {

@@ -1,10 +1,13 @@
 
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useUserSettings } from '@/hooks/useUserSettings';
 
 export function useDrugFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { toast } = useToast();
+  const { settings } = useUserSettings();
 
   useEffect(() => {
     // Load favorites from localStorage on component mount
@@ -15,12 +18,20 @@ export function useDrugFavorites() {
       } catch (e) {
         console.error('Failed to parse favorites:', e);
         setFavorites([]);
+        localStorage.removeItem('favoriteDrugs');
+        toast({
+          title: "Erro ao carregar favoritos",
+          description: "Não foi possível recuperar seus medicamentos favoritos.",
+          variant: "destructive"
+        });
       }
     }
+    
+    setIsLoaded(true);
 
     // Set up storage event listener for cross-tab synchronization
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'favoriteDrugs' && e.newValue) {
+      if (e.key === 'favoriteDrugs' && e.newValue !== null) {
         try {
           const updatedFavorites = JSON.parse(e.newValue);
           setFavorites(updatedFavorites);
@@ -32,7 +43,10 @@ export function useDrugFavorites() {
 
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  }, [toast]);
+
+  // Display favorites based on user settings
+  const visibleFavorites = settings.showFavorites ? favorites : [];
 
   const toggleFavorite = (drugId: string, drugName: string) => {
     setFavorites(prev => {
@@ -83,10 +97,12 @@ export function useDrugFavorites() {
 
   return {
     favorites,
+    visibleFavorites,
     toggleFavorite,
     isFavorite,
     getFavoriteCount,
     getFavoriteDrugIds,
-    clearAllFavorites
+    clearAllFavorites,
+    isLoaded
   };
 }

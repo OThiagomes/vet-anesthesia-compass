@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, FileText, User } from 'lucide-react';
+import { Search, X, FileText, Pill } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { Topic } from '../data/anesthesiaTopics';
+import { Topic, SubTopic } from '../data/anesthesiaTopics';
 import { DrugInfo } from './Pharmaceuticals';
 
 interface SearchResult {
@@ -139,7 +139,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
       case 'topic':
         return <FileText className="h-4 w-4 text-blue-600" />;
       case 'drug':
-        return <Search className="h-4 w-4 text-green-600" />;
+        return <Pill className="h-4 w-4 text-green-600" />;
       case 'subtopic':
         return <FileText className="h-4 w-4 text-purple-600" />;
       default:
