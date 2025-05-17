@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { Topic, SubTopic } from '../data/anesthesiaTopics';
+import { Topic } from '../data/anesthesiaTopics'; // SubTopic is not used directly here anymore
 import { DrugInfo } from './Pharmaceuticals';
+import { useSearch } from '@/hooks/useSearch'; // Import the hook
 
 interface SearchResult {
   id: string;
@@ -18,6 +19,7 @@ interface SearchResult {
   parentId?: string; // For subtopics
 }
 
+
 interface GlobalSearchProps {
   topics: Topic[];
   drugs: DrugInfo[];
@@ -25,11 +27,12 @@ interface GlobalSearchProps {
 
 const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Use the useSearch hook
+  const { searchTerm, results, handleSearchChange } = useSearch(topics, drugs);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -49,66 +52,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!searchTerm.trim()) {
-      setResults([]);
-      return;
-    }
-
-    const searchTermLower = searchTerm.toLowerCase();
-    const newResults: SearchResult[] = [];
-
-    // Search in topics
-    topics.forEach(topic => {
-      if (topic.title.toLowerCase().includes(searchTermLower) ||
-          topic.description.toLowerCase().includes(searchTermLower)) {
-        newResults.push({
-          id: topic.id.toString(),
-          title: topic.title,
-          type: 'topic',
-          description: topic.description,
-          path: `/topic/${topic.id}`,
-          icon: 'topic'
-        });
-      }
-
-      // Search in subtopics
-      topic.subtopics.forEach((subtopic, subtopicIndex) => {
-        const subtopicContentString = subtopic.content.join(' ');
-        if (subtopic.title.toLowerCase().includes(searchTermLower) ||
-            subtopicContentString.toLowerCase().includes(searchTermLower)) {
-          newResults.push({
-            id: `${topic.id}-${subtopicIndex}`,
-            title: subtopic.title,
-            type: 'subtopic',
-            description: topic.title + ' > ' + subtopic.title,
-            path: `/topic/${topic.id}#${subtopicIndex}`,
-            parentId: topic.id.toString(),
-            icon: 'subtopic'
-          });
-        }
-      });
-    });
-
-    // Search in drugs
-    drugs.forEach(drug => {
-      if (drug.name.toLowerCase().includes(searchTermLower) ||
-          drug.description.toLowerCase().includes(searchTermLower) ||
-          drug.class.toLowerCase().includes(searchTermLower)) {
-        newResults.push({
-          id: drug.id,
-          title: drug.name,
-          type: 'drug',
-          description: drug.class + ' - ' + drug.description.substring(0, 60) + '...',
-          path: `/#pharmaceuticals-${drug.id}`,
-          icon: 'drug'
-        });
-      }
-    });
-
-    setResults(newResults.slice(0, 10));
-  }, [searchTerm, topics, drugs]);
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -120,7 +63,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
       setSelectedIndex(prev => 
         prev > 0 ? prev - 1 : prev
       );
-    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+    } else if (e.key === 'Enter' && selectedIndex >= 0 && results[selectedIndex]) {
       e.preventDefault();
       handleResultClick(results[selectedIndex]);
     } else if (e.key === 'Escape') {
@@ -131,7 +74,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
   const handleResultClick = (result: SearchResult) => {
     navigate(result.path);
     setIsOpen(false);
-    setSearchTerm('');
+    handleSearchChange(''); // Clear search term on selection
   };
 
   const renderIcon = (type: string) => {
@@ -147,13 +90,29 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
     }
   };
 
+  const highlightMatch = (text: string, term: string) => {
+    if (!term.trim()) {
+      return text;
+    }
+    const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    return parts.map((part, index) =>
+      regex.test(part) ? <strong key={index} className="font-bold text-vet-blue dark:text-vet-teal-light">{part}</strong> : part
+    );
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      setIsOpen(open);
+      if (!open) {
+        handleSearchChange(''); // Clear search on dialog close
+        setSelectedIndex(-1);
+      }
+    }}>
       <DialogTrigger asChild>
         <Button 
           variant="outline" 
           className="w-[240px] justify-between text-muted-foreground"
-          onClick={() => setIsOpen(true)}
         >
           <div className="flex items-center gap-2">
             <Search className="h-4 w-4" />
@@ -174,7 +133,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
               placeholder="Pesquisar tópicos, fármacos..."
               value={searchTerm}
               onChange={(e) => {
-                setSearchTerm(e.target.value);
+                handleSearchChange(e.target.value);
                 setSelectedIndex(-1);
               }}
               onKeyDown={handleKeyDown}
@@ -182,7 +141,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
             {searchTerm && (
               <X
                 className="h-4 w-4 shrink-0 opacity-50 cursor-pointer"
-                onClick={() => setSearchTerm('')}
+                onClick={() => {
+                  handleSearchChange('');
+                  setSelectedIndex(-1);
+                  if (inputRef.current) inputRef.current.focus();
+                }}
               />
             )}
           </div>
@@ -193,24 +156,29 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
                   <li
                     key={result.id}
                     onClick={() => handleResultClick(result)}
+                    onMouseEnter={() => setSelectedIndex(index)}
                     className={cn(
                       "flex cursor-pointer items-center px-4 py-2 hover:bg-accent",
                       selectedIndex === index ? "bg-accent" : ""
                     )}
                   >
-                    <div className="mr-3">{renderIcon(result.type)}</div>
-                    <div>
-                      <p className="font-medium">{result.title}</p>
-                      <p className="text-sm text-muted-foreground truncate">
-                        {result.description}
+                    <div className="mr-3 shrink-0">{renderIcon(result.type)}</div>
+                    <div className="flex-grow overflow-hidden">
+                      <p className="font-medium truncate">
+                        {highlightMatch(result.title, searchTerm)}
                       </p>
+                      {result.description && (
+                        <p className="text-sm text-muted-foreground truncate">
+                          {highlightMatch(result.description, searchTerm)}
+                        </p>
+                      )}
                     </div>
                   </li>
                 ))}
               </ul>
             ) : searchTerm ? (
               <div className="p-4 text-center text-sm text-muted-foreground">
-                Nenhum resultado encontrado.
+                Nenhum resultado encontrado para "{searchTerm}".
               </div>
             ) : (
               <div className="p-4 text-center text-sm text-muted-foreground">
@@ -218,19 +186,21 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
               </div>
             )}
           </div>
-          <div className="flex items-center justify-between p-2 text-xs text-muted-foreground bg-muted/50">
-            <div>
-              <span>Pressione </span>
-              <kbd className="rounded border bg-muted px-1 text-xs">↑</kbd>
-              <span> e </span>
-              <kbd className="rounded border bg-muted px-1 text-xs">↓</kbd>
-              <span> para navegar</span>
+          {results.length > 0 && (
+            <div className="flex items-center justify-between p-2 text-xs text-muted-foreground bg-muted/50 border-t">
+              <div>
+                <span>Pressione </span>
+                <kbd className="rounded border bg-background px-1.5 py-0.5 text-xs">↑</kbd>
+                <span> e </span>
+                <kbd className="rounded border bg-background px-1.5 py-0.5 text-xs">↓</kbd>
+                <span> para navegar</span>
+              </div>
+              <div>
+                <kbd className="rounded border bg-background px-1.5 py-0.5 text-xs">Enter</kbd>
+                <span> para selecionar</span>
+              </div>
             </div>
-            <div>
-              <kbd className="rounded border bg-muted px-1 text-xs">Enter</kbd>
-              <span> para selecionar</span>
-            </div>
-          </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
