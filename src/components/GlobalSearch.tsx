@@ -1,24 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, FileText, Pill } from 'lucide-react';
+import { Search, X, FileText, Pill, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { Topic } from '../data/anesthesiaTopics'; // SubTopic is not used directly here anymore
+import { Topic } from '../data/anesthesiaTopics';
 import { DrugInfo } from './Pharmaceuticals';
-import { useSearch } from '@/hooks/useSearch'; // Import the hook
+import { useSearch } from '@/hooks/useSearch';
 
 interface SearchResult {
   id: string;
   title: string;
   type: 'topic' | 'drug' | 'subtopic';
   description?: string;
-  path: string; // URL to navigate to
+  path: string; 
   icon?: 'topic' | 'drug' | 'subtopic' | 'reference';
-  parentId?: string; // For subtopics
+  parentId?: string; 
 }
-
 
 interface GlobalSearchProps {
   topics: Topic[];
@@ -31,7 +30,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Use the useSearch hook
   const { searchTerm, results, handleSearchChange } = useSearch(topics, drugs);
 
   useEffect(() => {
@@ -74,7 +72,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
   const handleResultClick = (result: SearchResult) => {
     navigate(result.path);
     setIsOpen(false);
-    handleSearchChange(''); // Clear search term on selection
+    handleSearchChange(''); 
   };
 
   const renderIcon = (type: string) => {
@@ -105,7 +103,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
     <Dialog open={isOpen} onOpenChange={(open) => {
       setIsOpen(open);
       if (!open) {
-        handleSearchChange(''); // Clear search on dialog close
+        handleSearchChange(''); 
         setSelectedIndex(-1);
       }
     }}>
@@ -177,12 +175,16 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
                 ))}
               </ul>
             ) : searchTerm ? (
-              <div className="p-4 text-center text-sm text-muted-foreground">
-                Nenhum resultado encontrado para "{searchTerm}".
+              <div className="p-6 text-center text-sm text-muted-foreground">
+                <Search className="h-10 w-10 mx-auto mb-3 text-gray-400" />
+                <p className="font-medium">Nenhum resultado encontrado para "{searchTerm}".</p>
+                <p className="text-xs mt-1">Tente palavras-chave diferentes ou verifique a ortografia.</p>
               </div>
             ) : (
-              <div className="p-4 text-center text-sm text-muted-foreground">
-                Digite para pesquisar tópicos e fármacos.
+              <div className="p-6 text-center text-sm text-muted-foreground">
+                <Info className="h-10 w-10 mx-auto mb-3 text-gray-400" />
+                <p className="font-medium">Busque por tópicos ou fármacos</p>
+                <p className="text-xs mt-1">Use o campo acima para encontrar informações rapidamente.</p>
               </div>
             )}
           </div>
