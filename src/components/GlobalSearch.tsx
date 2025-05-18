@@ -73,6 +73,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
     navigate(result.path);
     setIsOpen(false);
     handleSearchChange(''); 
+    setSelectedIndex(-1); // Reset selected index on click
   };
 
   const renderIcon = (type: string) => {
@@ -98,6 +99,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
       regex.test(part) ? <strong key={index} className="font-bold text-vet-blue dark:text-vet-teal-light">{part}</strong> : part
     );
   };
+
+  const activeDescendantId = selectedIndex >= 0 && results[selectedIndex] ? `search-result-item-${selectedIndex}` : undefined;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => {
@@ -135,6 +138,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
                 setSelectedIndex(-1);
               }}
               onKeyDown={handleKeyDown}
+              aria-controls="search-results-listbox"
+              aria-activedescendant={activeDescendantId}
+              aria-autocomplete="list"
+              aria-expanded={isOpen && results.length > 0}
+              role="combobox"
             />
             {searchTerm && (
               <X
@@ -149,10 +157,17 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ topics, drugs }) => {
           </div>
           <div className="max-h-[300px] overflow-y-auto">
             {results.length > 0 ? (
-              <ul>
+              <ul
+                id="search-results-listbox"
+                role="listbox"
+                aria-label="Resultados da pesquisa"
+              >
                 {results.map((result, index) => (
                   <li
                     key={result.id}
+                    id={`search-result-item-${index}`}
+                    role="option"
+                    aria-selected={selectedIndex === index}
                     onClick={() => handleResultClick(result)}
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={cn(
